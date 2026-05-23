@@ -260,14 +260,6 @@ export default function AstroRings({ size = 620, className = '' }: AstroRingsPro
           {renderRingGroup(brightB, normalB, faintB, 'b')}
         </g>
 
-        {/* ═══════════════════════════════════════════════════════
-            INNER GLOW — subtle transition between rings and eye
-            Kept small and dim so it never competes with the eye.
-            ═══════════════════════════════════════════════════════ */}
-        <circle cx="300" cy="300" r="122"
-          fill="none" stroke="rgba(115,205,245,0.28)" strokeWidth="1.2"
-          filter="url(#ar-glow-strong)"
-          style={{ animation: reduced ? 'none' : 'ringPulse 6s ease-in-out infinite 3.8s' }} />
       </svg>
     </div>
   );
