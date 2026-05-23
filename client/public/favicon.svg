@@ -1,8 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <!-- Outer echo ring — thin, fading -->
-  <circle cx="32" cy="32" r="28" stroke="#5b9ed8" stroke-width="2.5" opacity="0.30"/>
-  <!-- Middle echo ring — the resonance -->
-  <circle cx="32" cy="32" r="17" stroke="#78b8ee" stroke-width="3.5" opacity="0.65"/>
-  <!-- Inner core — the source -->
-  <circle cx="32" cy="32" r="6" fill="#78b8ee" opacity="0.90"/>
+  <!-- Primary diamond — the "voice" -->
+  <g transform="translate(30, 30) rotate(45)">
+    <rect x="-14" y="-14" width="28" height="28" rx="6" fill="#78b8ee" />
+  </g>
+  <!-- Echo diamond — offset, outlined -->
+  <g transform="translate(36, 36) rotate(45)">
+    <rect x="-12" y="-12" width="24" height="24" rx="5" fill="none" stroke="#5b9ed8" stroke-width="2.5" opacity="0.70" />
+  </g>
 </svg>

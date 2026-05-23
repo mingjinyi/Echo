@@ -27,16 +27,17 @@ export default function Nav() {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2.5 group">
           <div className="w-9 h-9 flex items-center justify-center">
-            <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* Outer echo ring — thin, fading */}
-              <circle cx="16" cy="16" r="13.5"
-                stroke="var(--color-accent)" strokeWidth="1.2" opacity="0.35" />
-              {/* Middle echo ring — the resonance */}
-              <circle cx="16" cy="16" r="8.5"
-                stroke="var(--color-accent-hover)" strokeWidth="1.8" opacity="0.7" />
-              {/* Inner core — the source, filled */}
-              <circle cx="16" cy="16" r="3"
-                fill="var(--color-accent-hover)" opacity="0.9" />
+            <svg width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              {/* Primary — the "voice", solid diamond */}
+              <g transform="translate(18, 19) rotate(45)">
+                <rect x="-9.5" y="-9.5" width="19" height="19" rx="4"
+                  fill="var(--color-accent-hover)" />
+              </g>
+              {/* Echo — offset, outlined, slightly smaller */}
+              <g transform="translate(22, 22) rotate(45)">
+                <rect x="-8" y="-8" width="16" height="16" rx="3.5"
+                  fill="none" stroke="var(--color-accent)" strokeWidth="1.6" opacity="0.7" />
+              </g>
             </svg>
           </div>
           <span className="text-lg font-semibold tracking-tight" style={{ color: 'var(--color-text-primary)' }}>
