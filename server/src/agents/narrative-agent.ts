@@ -1,4 +1,4 @@
-import type { UserProfile } from '@shared/types';
+﻿import type { UserProfile } from '../../../shared/types';
 
 /**
  * Generate a literary narrative portrait from structured profile data.
@@ -215,4 +215,4 @@ function getLowTraits(dims: UserProfile['personalityDimensions']): string[] {
 }
 
 // Import needed for the NarrativeDimensions reference
-import type { NarrativeDimensions } from '@shared/types';
+import type { NarrativeDimensions } from '../../../shared/types';

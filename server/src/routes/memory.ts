@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+﻿import { Router, Request, Response } from 'express';
 import {
   loadMemories,
   addMemory,
@@ -7,7 +7,7 @@ import {
   loadProfile,
   saveProfile,
 } from '../memory';
-import type { MemoryEntry } from '@shared/types';
+import type { MemoryEntry } from '../../../shared/types';
 
 const router = Router();
 

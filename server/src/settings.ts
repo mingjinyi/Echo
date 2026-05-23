@@ -1,7 +1,7 @@
-import fs from 'fs';
+﻿import fs from 'fs';
 import path from 'path';
-import type { AppSettings } from '@shared/types';
-import { defaultSettings } from '@shared/types';
+import type { AppSettings } from '../../shared/types';
+import { defaultSettings } from '../../shared/types';
 
 const SETTINGS_PATH = path.join(__dirname, 'data', 'settings.json');
 

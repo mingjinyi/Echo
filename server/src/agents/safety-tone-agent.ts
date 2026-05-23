@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Safety & Tone Agent:
  * Ensures all system output is safe, natural, non-diagnostic, and appropriately empathetic.
  * This runs as the final filter before any content reaches the user.

@@ -1,4 +1,4 @@
-import type { UserProfile, Contradiction, Confidence } from '@shared/types';
+﻿import type { UserProfile, Contradiction, Confidence } from '../../../shared/types';
 
 /**
  * Detect contradictions between:

@@ -1,4 +1,4 @@
-import type { PersonalityDimensions, Confidence, Evidence, TraitValue } from '@shared/types';
+﻿import type { PersonalityDimensions, Confidence, Evidence, TraitValue } from '../../../shared/types';
 
 // Keyword and pattern dictionaries for personality dimension inference
 // Each dimension has indicators organized by direction (high vs low)

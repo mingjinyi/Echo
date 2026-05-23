@@ -1,4 +1,4 @@
-/**
+﻿/**
  * LLM-powered agent implementations.
  * Each function builds a prompt, calls the LLM, and parses the result.
  * Rule-engine fallback is handled by the orchestrator.
@@ -11,7 +11,7 @@ import type {
   PersonalityDimensions,
   FollowUpSuggestion,
   Contradiction,
-} from '@shared/types';
+} from '../../../shared/types';
 
 type AgentName = keyof AppSettings['agents'];
 

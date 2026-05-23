@@ -1,4 +1,4 @@
-import type {
+﻿import type {
   ChatRequest,
   ChatResponse,
   Message,
@@ -6,7 +6,7 @@ import type {
   UserProfile,
   Conversation,
   Confidence,
-} from '@shared/types';
+} from '../../../shared/types';
 import { v4 as uuidv4 } from 'uuid';
 
 import {

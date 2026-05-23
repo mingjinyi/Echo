@@ -1,4 +1,4 @@
-import type { FollowUpSuggestion } from '@shared/types';
+﻿import type { FollowUpSuggestion } from '../../../shared/types';
 
 interface DigSignal {
   type: 'emotion' | 'theme_repeat' | 'specific_event' | 'contradiction' | 'vagueness' | 'relationship' | 'turning_point';

@@ -1,4 +1,4 @@
-import fs from 'fs';
+﻿import fs from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import type {
@@ -9,7 +9,7 @@ import type {
   Conversation,
   Confidence,
   MemoryType,
-} from '@shared/types';
+} from '../../../shared/types';
 
 const DATA_DIR = path.join(__dirname, '..', 'data', 'users');
 

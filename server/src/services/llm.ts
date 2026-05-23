@@ -1,4 +1,4 @@
-import type { AppSettings, AgentLlmConfig, ProviderConfig } from '@shared/types';
+﻿import type { AppSettings, AgentLlmConfig, ProviderConfig } from '../../../shared/types';
 
 interface LlmRequest {
   systemPrompt: string;

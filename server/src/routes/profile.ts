@@ -1,7 +1,7 @@
-import { Router, Request, Response } from 'express';
+﻿import { Router, Request, Response } from 'express';
 import { loadProfile, saveProfile, saveProfileVersion } from '../memory';
 import { generateNarrative } from '../agents/narrative-agent';
-import type { UserProfile, MemoryEntry } from '@shared/types';
+import type { UserProfile, MemoryEntry } from '../../../shared/types';
 
 const router = Router();
 

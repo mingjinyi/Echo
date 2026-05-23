@@ -1,4 +1,4 @@
-import type { Conversation, UserProfile, ConversationPhase, Message } from '@shared/types';
+﻿import type { Conversation, UserProfile, ConversationPhase, Message } from '../../../shared/types';
 import type { BaseQuestion } from '../data/questions/base-questions';
 import {
   FOUNDATION_QUESTIONS,

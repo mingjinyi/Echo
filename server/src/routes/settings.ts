@@ -1,7 +1,7 @@
-import { Router, Request, Response } from 'express';
+﻿import { Router, Request, Response } from 'express';
 import { loadSettings, saveSettings } from '../settings';
 import { testConnection } from '../services/llm';
-import type { AppSettings } from '@shared/types';
+import type { AppSettings } from '../../../shared/types';
 
 const router = Router();
 
