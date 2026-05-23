@@ -26,16 +26,17 @@ export default function Nav() {
       <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2.5 group">
-          <div
-            className="w-8 h-8 rounded-full flex items-center justify-center transition-shadow duration-500"
-            style={{
-              background: 'var(--color-accent-glow)',
-              border: '1px solid var(--color-accent-glow)',
-            }}
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(160,200,235,0.7)" strokeWidth="2" strokeLinecap="round">
-              <path d="M2 12C2 12 6 5 12 5C18 5 22 12 22 12C22 12 18 19 12 19C6 19 2 12 2 12Z" />
-              <circle cx="12" cy="12" r="2.5" fill="rgba(160,200,235,0.5)" stroke="none" />
+          <div className="w-9 h-9 flex items-center justify-center">
+            <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              {/* Outer echo ring — thin, fading */}
+              <circle cx="16" cy="16" r="13.5"
+                stroke="var(--color-accent)" strokeWidth="1.2" opacity="0.35" />
+              {/* Middle echo ring — the resonance */}
+              <circle cx="16" cy="16" r="8.5"
+                stroke="var(--color-accent-hover)" strokeWidth="1.8" opacity="0.7" />
+              {/* Inner core — the source, filled */}
+              <circle cx="16" cy="16" r="3"
+                fill="var(--color-accent-hover)" opacity="0.9" />
             </svg>
           </div>
           <span className="text-lg font-semibold tracking-tight" style={{ color: 'var(--color-text-primary)' }}>

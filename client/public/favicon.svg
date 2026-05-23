@@ -1,7 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <circle cx="32" cy="32" r="30" fill="#faf7f2" stroke="#b58b62" stroke-width="2"/>
-  <path d="M22 32 Q28 24 32 28 Q36 32 42 26" stroke="#6e4b3a" stroke-width="2" fill="none" stroke-linecap="round"/>
-  <circle cx="24" cy="28" r="3" fill="#b58b62" opacity="0.5"/>
-  <circle cx="40" cy="30" r="3" fill="#b58b62" opacity="0.5"/>
-  <circle cx="32" cy="38" r="3" fill="#b58b62" opacity="0.8"/>
+  <!-- Outer echo ring — thin, fading -->
+  <circle cx="32" cy="32" r="28" stroke="#5b9ed8" stroke-width="2.5" opacity="0.30"/>
+  <!-- Middle echo ring — the resonance -->
+  <circle cx="32" cy="32" r="17" stroke="#78b8ee" stroke-width="3.5" opacity="0.65"/>
+  <!-- Inner core — the source -->
+  <circle cx="32" cy="32" r="6" fill="#78b8ee" opacity="0.90"/>
 </svg>
