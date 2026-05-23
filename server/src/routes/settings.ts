@@ -1,5 +1,5 @@
 ﻿import { Router, Request, Response } from 'express';
-import { loadSettings, saveSettings } from '../settings';
+import { loadSettings, saveSettings, restoreSettings } from '../settings';
 import { testConnection } from '../services/llm';
 import type { AppSettings } from '../../../shared/types';
 
@@ -59,6 +59,20 @@ router.put('/', (req: Request, res: Response) => {
       })),
     };
     res.json(masked);
+  } catch (e: any) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// POST /api/settings/restore — restore settings from client (survives Render restart)
+router.post('/restore', (req: Request, res: Response) => {
+  try {
+    const settings = req.body as AppSettings;
+    if (!settings || !settings.providers) {
+      return res.status(400).json({ error: 'invalid settings' });
+    }
+    restoreSettings(settings);
+    res.json({ ok: true });
   } catch (e: any) {
     res.status(500).json({ error: e.message });
   }

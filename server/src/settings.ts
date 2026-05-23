@@ -1,9 +1,12 @@
-﻿import fs from 'fs';
+import fs from 'fs';
 import path from 'path';
 import type { AppSettings } from '../../shared/types';
 import { defaultSettings } from '../../shared/types';
 
 const SETTINGS_PATH = path.join(__dirname, 'data', 'settings.json');
+
+// Memory cache — survives file loss on ephemeral storage (Render free tier)
+let memoryCache: AppSettings | null = null;
 
 function ensureDataDir() {
   const dir = path.join(__dirname, 'data');
@@ -13,19 +16,47 @@ function ensureDataDir() {
 }
 
 export function loadSettings(): AppSettings {
+  // Return memory cache if available (takes priority over file)
+  if (memoryCache) return memoryCache;
+
   ensureDataDir();
-  if (!fs.existsSync(SETTINGS_PATH)) {
-    const def = defaultSettings();
-    saveSettings(def);
-    return def;
+  try {
+    if (fs.existsSync(SETTINGS_PATH)) {
+      const raw = fs.readFileSync(SETTINGS_PATH, 'utf-8');
+      const settings = JSON.parse(raw);
+      if (settings.providers?.length > 0) {
+        memoryCache = settings;
+        return settings;
+      }
+    }
+  } catch {
+    // File corrupted or unreadable — fall through to defaults
   }
-  const raw = fs.readFileSync(SETTINGS_PATH, 'utf-8');
-  return JSON.parse(raw);
+
+  const def = defaultSettings();
+  memoryCache = def;
+  return def;
 }
 
 export function saveSettings(settings: AppSettings) {
+  memoryCache = settings; // Always update memory first
   ensureDataDir();
-  fs.writeFileSync(SETTINGS_PATH, JSON.stringify(settings, null, 2), 'utf-8');
+  try {
+    fs.writeFileSync(SETTINGS_PATH, JSON.stringify(settings, null, 2), 'utf-8');
+  } catch {
+    // File write failed — settings are safe in memoryCache
+  }
+}
+
+/** Restore settings from client-provided data (e.g. after Render restart) */
+export function restoreSettings(settings: AppSettings) {
+  memoryCache = settings;
+  ensureDataDir();
+  try {
+    fs.writeFileSync(SETTINGS_PATH, JSON.stringify(settings, null, 2), 'utf-8');
+  } catch {
+    // At minimum, memory cache is restored
+  }
 }
 
 /** Get the effective LLM config for an agent: returns null if rule engine should be used */

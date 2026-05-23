@@ -151,6 +151,12 @@ export const settingsApi = {
       body: JSON.stringify({ provider }),
     }),
 
+  restoreSettings: (settings: any) =>
+    request<{ ok: boolean }>('/settings/restore', {
+      method: 'POST',
+      body: JSON.stringify(settings),
+    }),
+
   resetSettings: () =>
     request<any>('/settings/reset', { method: 'POST' }),
 };

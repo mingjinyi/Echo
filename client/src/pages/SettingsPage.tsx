@@ -106,6 +106,20 @@ export default function SettingsPage() {
     try {
       setLoading(true);
       const s = await settingsApi.getSettings();
+
+      // If server has no providers (Render restart wiped them), restore from localStorage
+      if ((!s.providers || s.providers.length === 0 || !s.providers.some((p: any) => p.apiKey)) && localStorage.getItem('echo_settings')) {
+        try {
+          const cached = JSON.parse(localStorage.getItem('echo_settings')!);
+          if (cached.providers?.some((p: any) => p.apiKey)) {
+            await settingsApi.restoreSettings(cached);
+            Object.assign(s, cached);
+            setMessage('已从本地恢复配置');
+            setTimeout(() => setMessage(''), 2000);
+          }
+        } catch { /* localStorage corrupted, use defaults */ }
+      }
+
       if (!s.providers) s.providers = [];
       if (!s.agents) s.agents = {};
       for (const name of Object.keys(AGENT_NAMES)) {
@@ -121,12 +135,19 @@ export default function SettingsPage() {
     }
   };
 
+  const persistSettings = async (updated: any) => {
+    try {
+      await settingsApi.saveSettings(updated);
+      localStorage.setItem('echo_settings', JSON.stringify(updated));
+    } catch { /* server save failed, at least localStorage is set */ }
+  };
+
   const handleSave = async () => {
     if (!settings) return;
     try {
       setSaving(true);
       setMessage('');
-      await settingsApi.saveSettings(settings);
+      await persistSettings(settings);
       setMessage('已保存');
       setTimeout(() => setMessage(''), 2000);
     } catch (e: any) {
@@ -201,14 +222,18 @@ export default function SettingsPage() {
     if (!settings) return;
     const agents = { ...settings.agents };
     agents[agentName] = { ...agents[agentName], enabled: !agents[agentName].enabled };
-    setSettings({ ...settings, agents });
+    const updated = { ...settings, agents };
+    setSettings(updated);
+    persistSettings(updated);
   };
 
   const handleAgentProvider = (agentName: string, providerId: string) => {
     if (!settings) return;
     const agents = { ...settings.agents };
     agents[agentName] = { ...agents[agentName], providerId };
-    setSettings({ ...settings, agents });
+    const updated = { ...settings, agents };
+    setSettings(updated);
+    persistSettings(updated);
   };
 
   const handleReset = async () => {
@@ -435,15 +460,22 @@ export default function SettingsPage() {
               ))}
             </select>
             <button
-              onClick={() => {
+              onClick={async () => {
                 const sel = (document.getElementById('bulkProvider') as HTMLSelectElement)?.value;
                 if (!sel) return;
                 const agents = { ...settings.agents };
                 for (const name of Object.keys(agents)) {
                   agents[name] = { ...agents[name], enabled: true, providerId: sel };
                 }
-                setSettings({ ...settings, agents });
-                setMessage('全部 Agent 已统一设置');
+                const updated = { ...settings, agents };
+                setSettings(updated);
+                try {
+                  await settingsApi.saveSettings(updated);
+                  localStorage.setItem('echo_settings', JSON.stringify(updated));
+                  setMessage('全部 Agent 已统一设置并保存');
+                } catch {
+                  setMessage('已设置（保存失败，请手动点保存）');
+                }
                 setTimeout(() => setMessage(''), 2000);
               }}
               className="text-xs btn-primary px-4 py-1.5 whitespace-nowrap"
