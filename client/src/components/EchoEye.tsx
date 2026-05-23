@@ -166,30 +166,30 @@ export default function EchoEye({ size = 440, className = '' }: EchoEyeProps) {
         {/* ================================================================
             Layer 2 — Iris (large, bright gradient, glowing)
             ================================================================ */}
-        <ellipse cx="220" cy="92" rx="100" ry="72"
+        <ellipse cx="220" cy="92" rx="100" ry="76"
           fill="url(#ge-iris)"
           filter="url(#ge-iris-glow)" />
 
         {/* Iris inner glow fill */}
-        <ellipse cx="220" cy="92" rx="95" ry="68"
+        <ellipse cx="220" cy="92" rx="95" ry="72"
           fill="url(#ge-iris-ring)" />
 
         {/* Iris rings — subtle concentric structure */}
-        <ellipse cx="220" cy="92" rx="82" ry="60"
+        <ellipse cx="220" cy="92" rx="82" ry="62"
           fill="none" stroke="rgba(120,210,250,0.12)" strokeWidth="0.5" />
-        <ellipse cx="220" cy="92" rx="65" ry="48"
+        <ellipse cx="220" cy="92" rx="65" ry="50"
           fill="none" stroke="rgba(100,200,245,0.08)" strokeWidth="0.4" />
 
         {/* ================================================================
             Layer 3 — Pupil (bright fluorescent core, strong glow)
             ================================================================ */}
-        <ellipse cx="220" cy="92" rx="34" ry="28"
+        <ellipse cx="220" cy="92" rx="34" ry="31"
           fill="url(#ge-pupil)" filter="url(#ge-glow)" />
 
         {/* Inner pupil — bright center point */}
-        <ellipse cx="220" cy="92" rx="12" ry="10"
+        <ellipse cx="220" cy="92" rx="12" ry="11"
           fill="rgba(200,245,255,0.80)" />
-        <ellipse cx="220" cy="92" rx="5" ry="4"
+        <ellipse cx="220" cy="92" rx="5" ry="4.5"
           fill="rgba(230,252,255,0.72)" />
 
         {/* ================================================================
