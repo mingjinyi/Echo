@@ -1,4 +1,5 @@
 import type { Conversation, UserProfile, ConversationPhase, Message } from '@shared/types';
+import type { BaseQuestion } from '../data/questions/base-questions';
 import {
   FOUNDATION_QUESTIONS,
   getNextFoundationQuestion,
@@ -106,8 +107,8 @@ export function generateNextQuestion(
 
   // Otherwise, pick the next uncovered base question
   const askedBaseIds = FOUNDATION_QUESTIONS
-    .filter(q => conversation.messages.some(m => m.content.includes(q.text.slice(0, 20))))
-    .map(q => q.id);
+    .filter((q: BaseQuestion) => conversation.messages.some(m => m.content.includes(q.text.slice(0, 20))))
+    .map((q: BaseQuestion) => q.id);
 
   const nextQ = getNextFoundationQuestion(askedBaseIds);
   if (nextQ) {
@@ -238,9 +239,9 @@ export function getFoundationContext(conversation: Conversation): string {
     return '（基础知识已经全部覆盖，现在可以自由深入了。）';
   }
 
-  const pendingTitles = pending.map(q => `· ${q.text}`);
-  const askedTitles = askedIds.map(id => {
-    const q = FOUNDATION_QUESTIONS.find(q => q.id === id);
+  const pendingTitles = pending.map((q: BaseQuestion) => `· ${q.text}`);
+  const askedTitles = askedIds.map((id: string) => {
+    const q = FOUNDATION_QUESTIONS.find((q: BaseQuestion) => q.id === id);
     return q ? `✓ ${q.text}` : '';
   }).filter(Boolean);
 

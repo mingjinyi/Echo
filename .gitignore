@@ -8,8 +8,9 @@ dist/
 build/
 client/dist/
 
-# Server data (user conversations & profiles)
-server/src/data/
+# Server runtime data (user conversations, profiles, API keys)
+server/src/data/settings.json
+server/src/data/users/
 
 # Environment
 .env
