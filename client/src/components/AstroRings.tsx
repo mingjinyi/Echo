@@ -57,14 +57,17 @@ const BANDS: BandConfig[] = [
   // Encke gap — narrow, sharp
   { name: 'Encke', start: 243, end: 246, spacing: 2.0, baseOpacity: 0.05, opacityDecay: 0.0, strokeWidth: 0.25, color: 'cool' },
 
-  // A ring outer
-  { name: 'A-outer', start: 247, end: 262, spacing: 1.8, baseOpacity: 0.28, opacityDecay: 0.50, strokeWidth: 0.45, color: 'warm', dashEvery: 4 },
+  // A ring outer — extended
+  { name: 'A-outer', start: 247, end: 278, spacing: 1.8, baseOpacity: 0.28, opacityDecay: 0.55, strokeWidth: 0.45, color: 'warm', dashEvery: 4 },
 
-  // F ring — thin, just outside A
-  { name: 'F', start: 264, end: 276, spacing: 1.8, baseOpacity: 0.16, opacityDecay: 0.35, strokeWidth: 0.40, color: 'cool', particleEvery: 3 },
+  // F ring — thin, extended
+  { name: 'F', start: 280, end: 298, spacing: 2.0, baseOpacity: 0.15, opacityDecay: 0.40, strokeWidth: 0.38, color: 'cool', particleEvery: 3 },
 
   // Outer diffuse — fading into darkness
-  { name: 'outer', start: 278, end: 296, spacing: 2.8, baseOpacity: 0.10, opacityDecay: 0.70, strokeWidth: 0.32, color: 'cool', particleEvery: 2 },
+  { name: 'outer', start: 300, end: 328, spacing: 3.0, baseOpacity: 0.09, opacityDecay: 0.75, strokeWidth: 0.30, color: 'cool', particleEvery: 2 },
+
+  // Outermost haze — barely there, just a whisper of ring
+  { name: 'haze', start: 332, end: 350, spacing: 4.5, baseOpacity: 0.04, opacityDecay: 0.80, strokeWidth: 0.22, color: 'cool' },
 ];
 
 function buildRinglets(): Ringlet[] {
@@ -258,17 +261,13 @@ export default function AstroRings({ size = 620, className = '' }: AstroRingsPro
         </g>
 
         {/* ═══════════════════════════════════════════════════════
-            INNER GLOW — unrotated, centered on the eye
+            INNER GLOW — subtle transition between rings and eye
+            Kept small and dim so it never competes with the eye.
             ═══════════════════════════════════════════════════════ */}
-        <circle cx="300" cy="300" r="133"
-          fill="none" stroke="rgba(115,205,245,0.45)" strokeWidth="1.6"
+        <circle cx="300" cy="300" r="122"
+          fill="none" stroke="rgba(115,205,245,0.28)" strokeWidth="1.2"
           filter="url(#ar-glow-strong)"
           style={{ animation: reduced ? 'none' : 'ringPulse 6s ease-in-out infinite 3.8s' }} />
-
-        <circle cx="300" cy="300" r="127"
-          fill="none" stroke="rgba(115,205,245,0.20)" strokeWidth="9"
-          filter="url(#ar-glow-wide)"
-          style={{ animation: reduced ? 'none' : 'ringGlow 5s ease-in-out infinite' }} />
       </svg>
     </div>
   );
