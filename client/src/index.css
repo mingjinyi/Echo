@@ -1,0 +1,759 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   CSS Custom Properties — Deep Midnight Blue-Black Theme
+   回声 (Echo) — 深海夜色中的回声空间
+   ============================================================ */
+:root {
+  /* Background layers — deep ocean */
+  --color-abyss: #060b14;
+  --color-surface: #0a101f;
+  --color-surface-elevated: #111a2c;
+  --color-surface-card: #162236;
+
+  /* Borders */
+  --color-border: #1e2d47;
+  --color-border-light: #182538;
+  --color-border-highlight: #2a3d5c;
+
+  /* Text */
+  --color-text-primary: #e2e8f0;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted: #5e6f89;
+
+  /* Accent — muted silver-blue */
+  --color-accent: #7b93b0;
+  --color-accent-hover: #97afcc;
+  --color-accent-dim: #5a6f8a;
+  --color-accent-glow: rgba(123, 147, 176, 0.12);
+
+  /* Warm accent points — very sparing, like distant starlight */
+  --color-warm: #b8a089;
+  --color-warm-glow: rgba(184, 160, 137, 0.08);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 30px rgba(123, 147, 176, 0.08);
+  --shadow-card-hover: 0 8px 40px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(123, 147, 176, 0.12);
+
+  /* Glass */
+  --glass-bg: rgba(17, 26, 44, 0.65);
+  --glass-bg-strong: rgba(17, 26, 44, 0.85);
+  --glass-border: rgba(30, 45, 71, 0.6);
+  --glass-blur: 16px;
+
+  /* Chat background */
+  --bg-chat: linear-gradient(180deg, #0a101f 0%, #0d1628 50%, #0a101f 100%);
+
+  /* Echo ring colors */
+  --echo-ring-1: rgba(123, 147, 176, 0.12);
+  --echo-ring-2: rgba(123, 147, 176, 0.06);
+  --echo-ring-3: rgba(123, 147, 176, 0.03);
+
+  /* Particle */
+  --particle-color: rgba(148, 163, 184, 0.15);
+}
+
+/* .dark is now the default identity — keep for compatibility */
+.dark {
+  --color-abyss: #060b14;
+  --color-surface: #0a101f;
+  --color-surface-elevated: #111a2c;
+  --color-surface-card: #162236;
+  --color-border: #1e2d47;
+  --color-border-light: #182538;
+  --color-border-highlight: #2a3d5c;
+  --color-text-primary: #e2e8f0;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted: #5e6f89;
+  --color-accent: #7b93b0;
+  --color-accent-hover: #97afcc;
+  --color-accent-dim: #5a6f8a;
+  --color-accent-glow: rgba(123, 147, 176, 0.12);
+  --color-warm: #b8a089;
+  --color-warm-glow: rgba(184, 160, 137, 0.08);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 30px rgba(123, 147, 176, 0.08);
+  --shadow-card-hover: 0 8px 40px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(123, 147, 176, 0.12);
+  --glass-bg: rgba(17, 26, 44, 0.65);
+  --glass-bg-strong: rgba(17, 26, 44, 0.85);
+  --glass-border: rgba(30, 45, 71, 0.6);
+  --glass-blur: 16px;
+  --bg-chat: linear-gradient(180deg, #0a101f 0%, #0d1628 50%, #0a101f 100%);
+  --echo-ring-1: rgba(123, 147, 176, 0.12);
+  --echo-ring-2: rgba(123, 147, 176, 0.06);
+  --echo-ring-3: rgba(123, 147, 176, 0.03);
+  --particle-color: rgba(148, 163, 184, 0.15);
+}
+
+/* ============================================================
+   Base styles
+   ============================================================ */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    background: var(--color-abyss);
+  }
+
+  body {
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+  }
+
+  ::selection {
+    background-color: rgba(123, 147, 176, 0.2);
+    color: var(--color-text-primary);
+  }
+
+  /* Custom scrollbar — deep theme */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-text-muted);
+  }
+}
+
+/* ============================================================
+   Component classes
+   ============================================================ */
+@layer components {
+  /* ---- Glass card ---- */
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: 1rem;
+  }
+
+  .glass-strong {
+    background: var(--glass-bg-strong);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 1rem;
+  }
+
+  /* ---- Chat container ---- */
+  .chat-container {
+    @apply max-w-2xl mx-auto px-4 py-6;
+  }
+
+  /* ---- Message bubbles ---- */
+  .message-bubble {
+    @apply px-5 py-3 rounded-2xl max-w-[85%] leading-relaxed;
+  }
+
+  .message-user {
+    @apply message-bubble ml-auto;
+    background: linear-gradient(135deg, #3b5170 0%, #4f6990 100%);
+    border-radius: 1.25rem 1.25rem 0.25rem 1.25rem;
+    box-shadow: 0 2px 12px rgba(59, 81, 112, 0.25);
+    color: #e2e8f0;
+  }
+
+  .message-assistant {
+    @apply message-bubble;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: 1.25rem 1.25rem 1.25rem 0.25rem;
+    box-shadow: var(--shadow-sm);
+    color: var(--color-text-primary);
+  }
+
+  .message-system {
+    @apply message-bubble text-sm italic;
+    background: transparent;
+    border: 1px dashed var(--color-border);
+    box-shadow: none;
+    color: var(--color-text-secondary);
+  }
+
+  /* ---- Buttons ---- */
+  .btn-primary {
+    @apply px-6 py-2.5 rounded-full font-medium
+           transition-all duration-300
+           disabled:opacity-50 disabled:cursor-not-allowed
+           active:scale-[0.97];
+    background: linear-gradient(135deg, #3b5170 0%, #4f6990 100%);
+    box-shadow: 0 2px 12px rgba(59, 81, 112, 0.3);
+    color: #e2e8f0;
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: linear-gradient(135deg, #4a6490 0%, #5e7aa8 100%);
+    box-shadow: 0 4px 20px rgba(59, 81, 112, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    @apply px-6 py-2.5 rounded-full font-medium
+           transition-all duration-300
+           active:scale-[0.97];
+    background: var(--color-surface-elevated);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+  }
+  .btn-secondary:hover {
+    border-color: var(--color-accent);
+    color: var(--color-text-primary);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* ---- Cards ---- */
+  .card {
+    background: var(--color-surface-card);
+    border: 1px solid var(--color-border-light);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.4s ease, border-color 0.4s ease, transform 0.4s ease;
+  }
+  .card:hover {
+    box-shadow: var(--shadow-card-hover);
+    border-color: var(--color-border-highlight);
+  }
+
+  .card-elevated {
+    background: var(--color-surface-card);
+    border: 1px solid var(--color-border-light);
+    border-radius: 1.25rem;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+  }
+
+  /* ---- Input ---- */
+  .input-field {
+    @apply w-full px-4 py-3 rounded-xl transition-all duration-300;
+    background: var(--color-surface-elevated);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+  }
+  .input-field:focus {
+    @apply outline-none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px var(--color-accent-glow);
+  }
+  .input-field::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  /* ---- Navigation ---- */
+  .nav-link {
+    @apply text-sm px-3 py-2 rounded-lg transition-all duration-300 relative;
+    color: var(--color-text-secondary);
+  }
+  .nav-link:hover {
+    color: var(--color-text-primary);
+    background: rgba(123, 147, 176, 0.06);
+  }
+  .nav-link-active {
+    color: var(--color-text-primary);
+    background: rgba(123, 147, 176, 0.1);
+  }
+
+  /* ---- Section title ---- */
+  .section-title {
+    @apply text-xs font-medium uppercase tracking-widest mb-4;
+    color: var(--color-text-muted);
+    letter-spacing: 0.1em;
+  }
+
+  /* ---- Typography ---- */
+  .profile-narrative {
+    @apply font-serif text-lg leading-loose;
+    color: var(--color-text-primary);
+  }
+
+  .profile-narrative p {
+    @apply mb-5;
+  }
+
+  .profile-narrative p:first-child::first-letter {
+    font-size: 3.5rem;
+    float: left;
+    line-height: 0.8;
+    margin-right: 0.5rem;
+    margin-top: 0.25rem;
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  /* ---- Badge / Tag ---- */
+  .badge {
+    @apply inline-flex items-center text-xs px-2.5 py-0.5 rounded-full font-medium;
+  }
+
+  .badge-primary {
+    background: var(--color-accent-glow);
+    color: var(--color-accent-hover);
+  }
+
+  /* ---- Divider ---- */
+  .divider-text {
+    @apply flex items-center gap-3 text-xs font-medium my-6;
+    color: var(--color-text-muted);
+  }
+  .divider-text::before,
+  .divider-text::after {
+    content: '';
+    @apply flex-1 h-px;
+    background: var(--color-border);
+  }
+
+  /* ---- Skeleton loading ---- */
+  .skeleton {
+    background: linear-gradient(90deg,
+      var(--color-border-light) 25%,
+      var(--color-border) 50%,
+      var(--color-border-light) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s ease-in-out infinite;
+    border-radius: 0.5rem;
+  }
+}
+
+/* ============================================================
+   Utilities
+   ============================================================ */
+@layer utilities {
+  .animate-in {
+    animation: fadeInUp 0.5s ease-out both;
+  }
+  .animate-in-fast {
+    animation: fadeInUp 0.3s ease-out both;
+  }
+  .stagger-1 { animation-delay: 0.08s; }
+  .stagger-2 { animation-delay: 0.16s; }
+  .stagger-3 { animation-delay: 0.24s; }
+  .stagger-4 { animation-delay: 0.32s; }
+  .stagger-5 { animation-delay: 0.4s; }
+  .stagger-6 { animation-delay: 0.48s; }
+  .stagger-7 { animation-delay: 0.56s; }
+  .stagger-8 { animation-delay: 0.64s; }
+}
+
+/* ============================================================
+   Typing indicator
+   ============================================================ */
+.typing-indicator {
+  display: flex;
+  gap: 5px;
+  padding: 12px 20px;
+}
+
+.typing-indicator span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  animation: typingBounce 1.4s ease-in-out infinite;
+}
+
+.typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+.typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingBounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.25; }
+  30% { transform: translateY(-8px); opacity: 1; }
+}
+
+/* ============================================================
+   Page transition — soft crossfade
+   ============================================================ */
+.page-enter {
+  animation: pageEnter 0.45s ease-out both;
+}
+
+.page-exit {
+  animation: pageExit 0.2s ease-in both;
+}
+
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pageExit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+/* ============================================================
+   Keyframes — Echo Design System
+   ============================================================ */
+
+/* Fade in up — used for staggered entrance */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Fade in — simple opacity */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Shimmer — skeleton loading */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ============================================================
+   Deep ocean bioluminescent animations
+   ============================================================ */
+@keyframes oceanAura {
+  0%, 100% {
+    opacity: 0.8;
+    filter: blur(24px);
+  }
+  50% {
+    opacity: 1;
+    filter: blur(20px);
+  }
+}
+
+@keyframes oceanPulse {
+  0%, 100% {
+    opacity: 0.85;
+    filter: blur(10px);
+  }
+  50% {
+    opacity: 1;
+    filter: blur(7px);
+  }
+}
+
+@keyframes innerGlow {
+  0%, 100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ============================================================
+   Echo breathing — central ring pulsation
+   ============================================================ */
+@keyframes echoBreathe {
+  0%, 100% {
+    transform: scale(0.96);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 0.85;
+  }
+}
+
+/* ============================================================
+   Ring glow animation — ambient breathing
+   ============================================================ */
+@keyframes ringGlow {
+  0%, 100% {
+    opacity: 0.6;
+    filter: blur(8px);
+  }
+  50% {
+    opacity: 1;
+    filter: blur(5px);
+  }
+}
+
+/* ============================================================
+   Ring pulse — thin lines breathing
+   ============================================================ */
+@keyframes ringPulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ============================================================
+   Gaze aura — soft elliptical presence breathing
+   Subtle opacity pulse only, no scale change
+   ============================================================ */
+@keyframes gazeAura {
+  0%, 100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ============================================================
+   Eye blink animation — slow natural close/open
+   ============================================================ */
+@keyframes eyeBlink {
+  0%, 75%, 100% {
+    transform: scaleY(1);
+  }
+  78% {
+    transform: scaleY(0.95);
+  }
+  82% {
+    transform: scaleY(0.08);
+  }
+  86% {
+    transform: scaleY(0.08);
+  }
+  90% {
+    transform: scaleY(0.95);
+  }
+  93% {
+    transform: scaleY(1);
+  }
+}
+@keyframes rayPulse {
+  0%, 100% {
+    opacity: 0.12;
+    stroke-width: 1.8;
+  }
+  50% {
+    opacity: 0.32;
+    stroke-width: 2.4;
+  }
+}
+
+@keyframes rayPulseDiag {
+  0%, 100% {
+    opacity: 0.08;
+    stroke-width: 1.2;
+  }
+  50% {
+    opacity: 0.20;
+    stroke-width: 1.6;
+  }
+}
+
+/* ============================================================
+   Echo arcs bioluminescent pulse
+   ============================================================ */
+@keyframes arcPulse {
+  0%, 100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.32;
+  }
+}
+
+@keyframes arcPulseOuter {
+  0%, 100% {
+    opacity: 0.08;
+  }
+  50% {
+    opacity: 0.18;
+  }
+}
+
+/* ============================================================
+   Echo ripple expand — rings radiating outward
+   Visible diffusion like sound in deep water. Period: ~16s per ring
+   ============================================================ */
+@keyframes echoRipple {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+   Return echo — inward pulse, the "回" in 回声
+   A ring that contracts back inward, then releases.
+   ============================================================ */
+@keyframes returnEcho {
+  0%, 100% {
+    transform: scale(1.2);
+    opacity: 0.15;
+  }
+  35% {
+    transform: scale(0.85);
+    opacity: 0.45;
+  }
+  65% {
+    transform: scale(0.85);
+    opacity: 0.45;
+  }
+}
+
+/* ============================================================
+   Background drift — visible slow gradient flow
+   Larger movement range so the page clearly feels alive
+   ============================================================ */
+@keyframes bgDrift1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(3%, -2%) scale(1.04); }
+  50% { transform: translate(-2%, 2.5%) scale(1.03); }
+  75% { transform: translate(-3%, -1%) scale(1.05); }
+}
+
+@keyframes bgDrift2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-3%, 2%) scale(1.05); }
+  66% { transform: translate(2.5%, -3%) scale(1.03); }
+}
+
+/* ============================================================
+   CTA button breathing — pronounced glow pulse
+   Period: ~4s
+   ============================================================ */
+@keyframes ctaBreathe {
+  0%, 100% {
+    box-shadow: 0 0 25px rgba(123, 147, 176, 0.2), 0 0 50px rgba(100, 140, 180, 0.1), 0 4px 16px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 45px rgba(140, 180, 220, 0.35), 0 0 80px rgba(120, 160, 200, 0.2), 0 4px 24px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* ============================================================
+   CTA click ripple — expanding circle on click
+   ============================================================ */
+@keyframes ctaRipple {
+  0% {
+    transform: scale(0);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(5);
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+   Float — vertical drift for cards/elements
+   ============================================================ */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ============================================================
+   Particle drift — slow floating微粒
+   Multiple paths for organic variety
+   ============================================================ */
+@keyframes particleDrift {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(60px);
+    opacity: 0;
+  }
+}
+
+@keyframes particleDriftLeft {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  90% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(-50px);
+    opacity: 0;
+  }
+}
+
+@keyframes particleDriftArc {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.65;
+  }
+  50% {
+    transform: translateY(-50vh) translateX(30px);
+    opacity: 0.5;
+  }
+  85% {
+    opacity: 0.65;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(-20px);
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+   Title glow breathe — visible luminosity pulse on main title
+   ============================================================ */
+@keyframes titleGlow {
+  0%, 100% {
+    text-shadow: 0 0 30px rgba(140, 180, 220, 0.15), 0 0 80px rgba(123, 147, 176, 0.08);
+  }
+  50% {
+    text-shadow: 0 0 50px rgba(160, 200, 240, 0.3), 0 0 120px rgba(140, 170, 210, 0.18);
+  }
+}
+
+/* ============================================================
+   Reduced motion — respect user preference
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
