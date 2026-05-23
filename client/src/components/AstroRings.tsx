@@ -135,6 +135,26 @@ function buildLitArcs(): LitArc[] {
 
 const LIT_ARCS = buildLitArcs();
 
+// ── Inclined rings — slight gravitational warps in the ring plane ──
+// These add organic imperfection: no real ring system is perfectly flat.
+interface InclinedRing {
+  rx: number;
+  opacity: number;
+  strokeWidth: number;
+  angle: number; // degrees of rotation from horizontal
+  color: Ringlet['color'];
+}
+
+const INCLINED_RINGS: InclinedRing[] = [
+  { rx: 168, opacity: 0.30, strokeWidth: 0.55, angle: 5, color: 'bright' },
+  { rx: 175, opacity: 0.34, strokeWidth: 0.50, angle: -6, color: 'bright' },
+  { rx: 210, opacity: 0.26, strokeWidth: 0.50, angle: 4, color: 'bright' },
+  { rx: 232, opacity: 0.20, strokeWidth: 0.45, angle: -7, color: 'warm' },
+  { rx: 254, opacity: 0.14, strokeWidth: 0.40, angle: 6, color: 'warm' },
+  { rx: 272, opacity: 0.09, strokeWidth: 0.35, angle: -5, color: 'cool' },
+  { rx: 288, opacity: 0.05, strokeWidth: 0.30, angle: 8, color: 'cool' },
+];
+
 // ── Color helper ──
 function ringColor(color: Ringlet['color'], opacity: number): string {
   const base = color === 'bright' ? '100,200,240' : color === 'warm' ? '110,185,225' : '80,175,225';
@@ -295,6 +315,25 @@ export default function AstroRings({ size = 620, className = '' }: AstroRingsPro
             />
           ))}
         </g>
+
+        {/* ═══════════════════════════════════════════════════════
+            INCLINED RINGS — subtle gravitational warps (4-8°)
+            Breaks the perfect uniformity; no real ring is flat.
+            ═══════════════════════════════════════════════════════ */}
+        {INCLINED_RINGS.map((ring, i) => (
+          <ellipse
+            key={`inc-${i}`}
+            cx="300" cy="300"
+            rx={ring.rx}
+            ry={ring.rx * TILT}
+            fill="none"
+            stroke={ringColor(ring.color, ring.opacity)}
+            strokeWidth={ring.strokeWidth}
+            transform={`rotate(${ring.angle} 300 300)`}
+            filter="url(#ar-glow)"
+            style={{ animation: reduced ? 'none' : `ringPulse 6s ease-in-out infinite ${(i * 0.5) % 2.5}s` }}
+          />
+        ))}
 
         {/* ═══════════════════════════════════════════════════════
             SHADOW OVERLAY — realistic 3D lighting falloff
