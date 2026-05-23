@@ -382,6 +382,94 @@ export function extractRelationships(response: string): Array<{
   return relationships;
 }
 
+/**
+ * Extract timeline events from user responses.
+ * Detects mentions of past experiences, recent changes, and future aspirations.
+ */
+export function extractTimelineEvents(
+  response: string,
+  messageIndex: number
+): Array<{ id: string; label: string; phase: 'past' | 'recent' | 'present' | 'future'; description: string; impact: number; category: 'relationship' | 'career' | 'growth' | 'loss' | 'realization' | 'transition' | 'other' }> {
+  const events: Array<any> = [];
+
+  function guessCategory(text: string): 'relationship' | 'career' | 'growth' | 'loss' | 'realization' | 'transition' | 'other' {
+    if (/分手|恋爱|在一起|朋友|家人|父母|妈妈|爸爸|伴侣|闺蜜|结婚|离婚/.test(text)) return 'relationship';
+    if (/工作|上班|辞职|跳槽|公司|老板|同事|考试|学校|毕业/.test(text)) return 'career';
+    if (/成长|学到|改变|明白|意识到|懂得/.test(text)) return 'growth';
+    if (/失去|去世|离开|走了|没了|分手|丢掉/.test(text)) return 'loss';
+    if (/突然|才发现|原来|终于|那一刻|顿悟/.test(text)) return 'realization';
+    if (/搬到|换了|转变|转折|开始|结束/.test(text)) return 'transition';
+    return 'other';
+  }
+
+  // Past events
+  const pastPatterns = [
+    { regex: /(?:小时候|以前|曾经|那[一两三]年|当时|几年前|大学[那时]|毕业后|刚工作[那时])[，,]?\s*([^，。！？\n]{8,40})/g, descGroup: 1 },
+    { regex: /记得.{0,3}(?:有一次|有一回|那[个次][时候])[，,]?\s*([^，。！？\n]{8,40})/g, descGroup: 1 },
+  ];
+
+  for (const pattern of pastPatterns) {
+    let match;
+    while ((match = pattern.regex.exec(response)) !== null) {
+      const desc = (match[pattern.descGroup] || match[0]).trim().slice(0, 30);
+      events.push({
+        id: `tl_${Date.now()}_${events.length}`,
+        label: desc,
+        phase: 'past' as const,
+        description: desc,
+        impact: 6,
+        category: guessCategory(desc),
+      });
+    }
+  }
+
+  // Recent events
+  const recentMatch = response.match(/(?:最近|这段时间|这几天|最近几个月|前阵子)[，,]?\s*([^，。！？\n]{8,40})/);
+  if (recentMatch) {
+    const desc = recentMatch[1].trim().slice(0, 30);
+    events.push({
+      id: `tl_${Date.now()}_${events.length}`,
+      label: desc,
+      phase: 'recent' as const,
+      description: desc,
+      impact: 5,
+      category: guessCategory(desc),
+    });
+  }
+
+  // Present state
+  if (messageIndex >= 3) {
+    const presentMatch = response.match(/(?:现在|目前|如今|当下)[，,]?\s*([^，。！？\n]{8,40})/);
+    if (presentMatch) {
+      const desc = presentMatch[1].trim().slice(0, 30);
+      events.push({
+        id: `tl_${Date.now()}_${events.length}`,
+        label: desc,
+        phase: 'present' as const,
+        description: desc,
+        impact: 4,
+        category: guessCategory(desc),
+      });
+    }
+  }
+
+  // Future aspirations
+  const futureMatch = response.match(/(?:将来|以后|希望.{0,5}能|想成为|计划.{0,3}要)[，,]?\s*([^，。！？\n]{8,40})/);
+  if (futureMatch) {
+    const desc = futureMatch[1].trim().slice(0, 30);
+    events.push({
+      id: `tl_${Date.now()}_${events.length}`,
+      label: desc,
+      phase: 'future' as const,
+      description: desc,
+      impact: 3,
+      category: guessCategory(desc),
+    });
+  }
+
+  return events;
+}
+
 function confidenceOrder(c: Confidence): number {
   return c === 'high' ? 3 : c === 'medium' ? 2 : 1;
 }

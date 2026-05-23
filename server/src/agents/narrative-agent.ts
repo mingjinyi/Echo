@@ -112,6 +112,48 @@ function generatePersonalitySection(
     lines.push('她在关系里很敏锐——对方一个微小的变化、一个微妙的语气，她都能捕捉到。这让她很会照顾别人的感受，但也让她比别人更容易在关系中感到疲惫。');
   }
 
+  // Social energy
+  if (lowTraits.includes('socialEnergy')) {
+    lines.push('她的能量像是内向型的——独处不是逃避，而是充电。在人群中她可以应对，但那之后她需要一段安静的时间来恢复自己。这不是社交障碍，而是她的自然节奏。');
+  } else if (highTraits.includes('socialEnergy')) {
+    lines.push('她在和人的连接里获得能量。交谈、聚会、一起做点什么——这些不是消耗，而是她的燃料。一个人的时候也可以，但有温度的人群让她感觉到自己是活着的。');
+  }
+
+  // Self-expression
+  if (highTraits.includes('selfExpressionTendency')) {
+    lines.push('她不太把话闷在心里——有什么想法、感受、意见，她会选择说出来。这不是冲动，而是她相信表达本身是有价值的：说出来，才能被理解；不说，就是默认沉默。');
+  } else if (lowTraits.includes('selfExpressionTendency')) {
+    lines.push('她的表达方式不是直接的。很多话在她心里转了好几圈才出来，或者就不出来了。这不是不信任，而是她需要一个比日常对话更安全的空间，才能让语言自然流动。');
+  }
+
+  // Dependency / independence
+  if (highTraits.includes('dependencyIndependence')) {
+    lines.push('她习惯了靠自己。求助对她来说不是一件轻松的事——她会先试过所有自己能做的事情，实在不行了，才会犹豫着开口。这种独立有时候会被误解为疏远，但对她来说，这是对自己的尊重。');
+  } else if (lowTraits.includes('dependencyIndependence')) {
+    lines.push('她知道一个人的力量是有限的。她愿意在需要的时候依靠别人，也相信关系中的相互支撑不是软弱，而是一种成熟。在人和人之间，她找到的不是负担，而是安全。');
+  }
+
+  // Risk aversion
+  if (highTraits.includes('riskAversion')) {
+    lines.push('她对不确定性有一种天然的警觉。值得冒险的事，她会反复衡量——这并不是胆小，而是她对安全感的看重，远超过对刺激的渴望。她宁愿走得稳，也不愿走得快而后悔。');
+  } else if (lowTraits.includes('riskAversion')) {
+    lines.push('她不太怕未知。比起稳妥的路径，她更在意那件事值不值得——如果值得，风险反而是让她觉得"这真的是我"的理由。她不是鲁莽，只是相比后悔没做，她更愿意承受做了的后果。');
+  }
+
+  // Empathy
+  if (highTraits.includes('empathyTendency')) {
+    lines.push('她的同理心很强——不是那种刻意的"我理解你"，而是一种自动的共振。别人还没开口，她已经感觉到气氛的变化。这让她在亲密关系中很受信任，但也让她常常背上了不属于自己的情绪重量。');
+  } else if (lowTraits.includes('empathyTendency')) {
+    lines.push('她不是不关心别人的感受，而是她更习惯用理性去回应，而不是用情绪。面对别人的痛苦，她会想"我能做什么"而不是"我也好难过"。这是一种能力——在别人被情绪淹没时，她是那个还能站着的人。');
+  }
+
+  // Action preference
+  if (highTraits.includes('actionPreference')) {
+    lines.push('她是一个先做再说的人。不是冲动，而是她相信行动本身会带来答案——等着想清楚有时候反而会困在原地。她的风格是：在移动中瞄准，而不是先瞄准再移动。');
+  } else if (lowTraits.includes('actionPreference')) {
+    lines.push('她更倾向于想好了再动。观察、思考、在心里推演一遍——然后才是行动。这让她看起来比同龄人稳重，但也让她在一些需要快速反应的时候错过了一些可能性。');
+  }
+
   return lines.join('\n\n');
 }
 
@@ -184,22 +226,32 @@ function generateClosing(
   dims: UserProfile['personalityDimensions'],
   narr: NarrativeDimensions
 ): string {
-  const coreNarrative = narr.coreNarrative;
+  const coreNarrative = narr.coreNarrative || '复杂而真实';
   const reflectionAbility = dims.reflectionAbility.value;
+  const empathy = dims.empathyTendency.value;
+  const independence = dims.dependencyIndependence.value;
+  const socialEnergy = dims.socialEnergy.value;
+  const risk = dims.riskAversion.value;
 
-  const closings = [
-    `也许最准确的说法是：她是一个${coreNarrative || '复杂而真实'}的人。\n\n不是标签能概括的，不是问卷能测出来的。她是一段正在进行中的故事，有过去的回声，也有未来的空白页。`,
-    `写到这里，其实最想说的是——\n\n她不是某种类型，她是一部正在被写的故事。有些章节已经翻过去了，有些还在写。不是完美的，但每一页都是她自己的。`,
-    `理解一个人，从来不是一次总结就能完成的事。\n\n她还在变化，还在成长，还在一些自己也没注意到的地方悄悄变得不一样。这篇画像只是一个时间的切片——而关于她的故事，还有很长的路。`,
-  ];
-
+  // Personalized closing — match the most distinctive trait
   if (reflectionAbility >= 7) {
-    closings.push(
-      `她是一个会回头审视自己的人。这既是天赋，也是一种辛苦——因为她看到的比别人更多，包括那些不太好看的部分。\n\n但也许正是这种"看见自己"的能力，让她在人群中多了一层人所不知的深刻。`
-    );
+    return `她是一个会回头审视自己的人。这既是天赋，也是一种辛苦——因为她看到的比别人更多，包括那些不太好看的部分。\n\n但也许正是这种"看见自己"的能力，让她在人群中多了一层人所不知的深刻。`;
+  }
+  if (empathy >= 7) {
+    return `她像一面敏感的镜子——映照着别人的情绪，也承受着因此而来的重量。\n\n这种敏感不是弱点，而是她理解世界的特殊方式。她不是那种会把一切想得很简单的人，因为她感受到的太多。但也许，这正是她能触碰到人心深处的原因。`;
+  }
+  if (independence >= 7) {
+    return `她是一个可以依靠自己的人。这比大多数人能做到的都更难——一个人撑过一些东西，一个人想明白一些事情。\n\n独立是她的盔甲，但她也会在一些不经意的瞬间发现，有些温柔只有在对别人卸下盔甲时才会到来。`;
+  }
+  if (socialEnergy <= 4) {
+    return `有时候安静的人不是没有故事，而是他们的故事需要被认真地问，才能被好好地听。\n\n她是那种深水型的人——表面不容易起波澜，但越往下越有温度，越往下越亮。也许这就是为什么和她相处久了的人，会越来越觉得珍贵。`;
+  }
+  if (risk >= 7) {
+    return `她不是一个轻易冒险的人。她珍视已经拥有的东西——稳定、安全、可预期。\n\n这不是胆怯，而是她的节奏。在别人急着往前跑的时候，她会在后面慢慢走。而当那些人精疲力尽地停下来时，会发现她不慌不忙地跟在后面——什么都没错过。`;
   }
 
-  return closings[Math.floor(Math.random() * closings.length)];
+  // Default: warm, non-classifying closing
+  return `也许最准确的说法是：她是一个${coreNarrative}的人。\n\n不是标签能概括的，不是问卷能测出来的。她是一段正在进行中的故事，有过去的回声，也有未来的空白页。`;
 }
 
 function getHighTraits(dims: UserProfile['personalityDimensions']): string[] {

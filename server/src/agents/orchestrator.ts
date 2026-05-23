@@ -19,7 +19,7 @@ import {
   addEvidence,
 } from '../memory';
 
-import { analyzeResponse, extractNarrativePatterns, extractRelationships } from './profiler-agent';
+import { analyzeResponse, extractNarrativePatterns, extractRelationships, extractTimelineEvents } from './profiler-agent';
 import { analyzeForDigging } from './digging-agent';
 import { detectContradictions, mergeContradictions } from './contradiction-agent';
 import { generateNarrative } from './narrative-agent';
@@ -183,6 +183,17 @@ export async function processMessage(request: ChatRequest): Promise<ChatResponse
     } else {
       existing.lastMentioned = new Date().toISOString();
       existing.emotionalTone = rel.emotionalTone || existing.emotionalTone;
+    }
+  }
+
+  // Extract timeline events from the user's message
+  const timelineEvents = extractTimelineEvents(userMessage, conversation.messages.length);
+  for (const event of timelineEvents) {
+    const existing = profile.timeline.find(
+      t => t.label === event.label && t.phase === event.phase
+    );
+    if (!existing) {
+      profile.timeline.push(event);
     }
   }
 
