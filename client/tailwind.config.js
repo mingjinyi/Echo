@@ -5,32 +5,32 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Deep ocean blue-black scale (replaces old echo- warm brown)
+        // Deep ocean blue-black scale — rich, saturated oceanic depths
         echo: {
-          50: '#e8edf4',
-          100: '#d0daea',
-          200: '#a2b6d5',
-          300: '#7392c0',
-          400: '#5173a8',
-          500: '#3b5990',
-          600: '#2d4578',
-          700: '#223560',
-          800: '#192848',
-          900: '#111c36',
-          950: '#0a1224',
+          50: '#e6eef7',
+          100: '#cdddef',
+          200: '#9abbd8',
+          300: '#6b99c0',
+          400: '#4a7fa8',
+          500: '#356890',
+          600: '#285578',
+          700: '#1e4260',
+          800: '#153048',
+          900: '#0d1f33',
+          950: '#061022',
         },
-        // Muted silver-blue accent scale
+        // Oceanic blue accent — vivid bioluminescent, not muted gray-blue
         accent: {
-          50: '#f2f5f8',
-          100: '#e2e8f0',
-          200: '#c5d1e0',
-          300: '#a3b5cc',
-          400: '#7b93b0',
-          500: '#647a99',
-          600: '#4f6582',
-          700: '#3d506b',
-          800: '#2d3e54',
-          900: '#1f2c3e',
+          50: '#eaf2f9',
+          100: '#d4e5f3',
+          200: '#a9cce7',
+          300: '#7db3db',
+          400: '#5b9ed8',
+          500: '#458cc8',
+          600: '#3575b0',
+          700: '#2a5f90',
+          800: '#204970',
+          900: '#183550',
         },
         // Warm accent — used sparingly, like distant starlight
         warm: {

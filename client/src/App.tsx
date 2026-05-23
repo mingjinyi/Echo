@@ -25,9 +25,12 @@ function App() {
     }
   }, [location]);
 
-  // Apply deep theme by default
+  // Apply theme — default to dark, respect saved preference
   useEffect(() => {
-    document.documentElement.classList.add('dark');
+    const saved = localStorage.getItem('echo_dark_mode');
+    if (saved !== 'light') {
+      document.documentElement.classList.add('dark');
+    }
   }, []);
 
   return (

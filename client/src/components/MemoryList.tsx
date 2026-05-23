@@ -1,4 +1,4 @@
-import type { MemoryEntry } from '../types';
+﻿import type { MemoryEntry } from '../types';
 
 interface Props {
   memories: MemoryEntry[];
@@ -33,7 +33,7 @@ export default function MemoryList({ memories, onDelete }: Props) {
   if (memories.length === 0) {
     return (
       <div className="text-center py-16">
-        <div className="w-14 h-14 rounded-full bg-[rgba(123,147,176,0.06)] flex items-center justify-center mx-auto mb-4">
+        <div className="w-14 h-14 rounded-full bg-[rgba(91,158,216,0.06)] flex items-center justify-center mx-auto mb-4">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-muted)" strokeWidth="1.5" strokeLinecap="round">
             <path d="M12 2L2 7l10 5 10-5-10-5z" />
             <path d="M2 17l10 5 10-5" />
@@ -54,7 +54,7 @@ export default function MemoryList({ memories, onDelete }: Props) {
             <div className="flex-1 min-w-0">
               {/* Badges row */}
               <div className="flex items-center gap-2 mb-3 flex-wrap">
-                <span className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-[rgba(123,147,176,0.08)] text-[var(--color-text-secondary)] border border-[var(--color-border-light)]">
+                <span className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-[rgba(91,158,216,0.08)] text-[var(--color-text-secondary)] border border-[var(--color-border-light)]">
                   <span>{TYPE_ICONS[mem.type] || '·'}</span>
                   {TYPE_LABELS[mem.type] || mem.type}
                 </span>

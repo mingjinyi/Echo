@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useProfile } from '../hooks/useProfile';
 import ProfileCard from '../components/ProfileCard';
 import type { ProfileVersion } from '../types';
@@ -71,8 +71,8 @@ export default function ProfilePage() {
                   }
                   className={`w-full text-left p-4 pl-9 rounded-xl transition-all duration-200 relative ${
                     selectedVersion === version.version
-                      ? 'bg-[rgba(123,147,176,0.08)]'
-                      : 'hover:bg-[rgba(123,147,176,0.04)]'
+                      ? 'bg-[rgba(91,158,216,0.08)]'
+                      : 'hover:bg-[rgba(91,158,216,0.04)]'
                   }`}
                 >
                   {/* Timeline dot */}
@@ -97,7 +97,7 @@ export default function ProfilePage() {
                       {version.majorChanges.map((change: string, i: number) => (
                         <span
                           key={i}
-                          className="text-xs px-2.5 py-1 rounded-full bg-[rgba(123,147,176,0.08)] text-[var(--color-text-secondary)]"
+                          className="text-xs px-2.5 py-1 rounded-full bg-[rgba(91,158,216,0.08)] text-[var(--color-text-secondary)]"
                         >
                           {change}
                         </span>
@@ -123,7 +123,7 @@ export default function ProfilePage() {
               { value: summary.timelineEvents, label: '时间节点', icon: '→' },
               { value: summary.latestVersion, label: '画像版本', icon: '#' },
             ].map(({ value, label, icon }) => (
-              <div key={label} className="p-3 rounded-xl bg-[rgba(123,147,176,0.04)] text-center hover:bg-[rgba(123,147,176,0.08)] transition-colors duration-200">
+              <div key={label} className="p-3 rounded-xl bg-[rgba(91,158,216,0.04)] text-center hover:bg-[rgba(91,158,216,0.08)] transition-colors duration-200">
                 <div className="text-xs text-[var(--color-text-muted)] mb-1">{icon}</div>
                 <div className="text-2xl font-semibold text-[var(--color-text-primary)] tabular-nums">
                   {value}

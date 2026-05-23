@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useChat } from '../hooks/useChat';
 import { chatApi } from '../api/client';
 import ChatBubble from '../components/ChatBubble';
@@ -105,7 +105,7 @@ export default function ChatPage() {
         {/* Empty state */}
         {!hasMessages && !loading && (
           <div className="flex flex-col items-center justify-center h-64 gap-4">
-            <div className="w-16 h-16 rounded-full bg-[rgba(123,147,176,0.08)] flex items-center justify-center">
+            <div className="w-16 h-16 rounded-full bg-[rgba(91,158,216,0.08)] flex items-center justify-center">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" strokeWidth="1.5" strokeLinecap="round">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
               </svg>

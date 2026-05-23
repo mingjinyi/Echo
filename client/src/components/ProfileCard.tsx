@@ -1,4 +1,4 @@
-import type { Trait } from '../types';
+﻿import type { Trait } from '../types';
 
 interface Props {
   narrative: string | null;
@@ -23,9 +23,9 @@ const TRAIT_LABELS: Record<string, string> = {
 };
 
 function confidenceColor(confidence: string) {
-  if (confidence === 'high') return { bar: 'from-emerald-500 to-emerald-400', bg: 'bg-emerald-50 text-emerald-700' };
-  if (confidence === 'medium') return { bar: 'from-amber-500 to-amber-400', bg: 'bg-amber-50 text-amber-700' };
-  return { bar: 'from-stone-300 to-stone-200', bg: 'bg-stone-50 text-stone-600' };
+  if (confidence === 'high') return { bar: 'from-[#6b9ec0] to-[#8ab8d8]', bg: 'bg-[rgba(120,160,200,0.15)] text-[#a3c8e0]' };
+  if (confidence === 'medium') return { bar: 'from-[#8a9ab0] to-[#a0b0c4]', bg: 'bg-[rgba(140,155,175,0.15)] text-[#b0bcc8]' };
+  return { bar: 'from-[#3d4f65] to-[#4f6280]', bg: 'bg-[rgba(100,120,150,0.12)] text-[#7b8fa6]' };
 }
 
 function TraitBar({ name, value, confidence }: { name: string; value: number; confidence: string }) {
@@ -59,7 +59,7 @@ export default function ProfileCard({ narrative, traits, version, generatedAt }:
   if (!narrative && (!traits || traits.length === 0)) {
     return (
       <div className="card text-center py-16">
-        <div className="w-14 h-14 rounded-full bg-[rgba(123,147,176,0.08)] flex items-center justify-center mx-auto mb-4">
+        <div className="w-14 h-14 rounded-full bg-[rgba(91,158,216,0.08)] flex items-center justify-center mx-auto mb-4">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-muted)" strokeWidth="1.5" strokeLinecap="round">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
             <polyline points="14 2 14 8 20 8" />

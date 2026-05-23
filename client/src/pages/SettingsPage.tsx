@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { settingsApi } from '../api/client';
 
 interface ModelOption {
@@ -259,8 +259,8 @@ export default function SettingsPage() {
       {message && (
         <div className={`text-sm px-4 py-3 rounded-xl animate-fade-in-down ${
           message.startsWith('连接失败') || message.startsWith('保存失败') || message.startsWith('测试失败') || message.startsWith('重置失败') || message.startsWith('加载失败')
-            ? 'bg-red-50 text-red-600 border border-red-200'
-            : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+            ? 'bg-red-950/30 text-red-300 border border-red-800/30'
+            : 'bg-emerald-950/30 text-emerald-300 border border-emerald-800/30'
         }`}>
           {message}
         </div>
@@ -304,7 +304,7 @@ export default function SettingsPage() {
               }}
               className={`text-sm px-4 py-2 rounded-xl border transition-all duration-200 ${
                 selectedType === t.provider
-                  ? 'border-[var(--color-accent)] bg-[rgba(123,147,176,0.1)] text-[var(--color-text-primary)] shadow-sm'
+                  ? 'border-[var(--color-accent)] bg-[rgba(91,158,216,0.1)] text-[var(--color-text-primary)] shadow-sm'
                   : 'border-[var(--color-border)] bg-[var(--color-surface-elevated)] text-[var(--color-text-secondary)] hover:border-[var(--color-accent)]'
               }`}
             >
@@ -325,7 +325,7 @@ export default function SettingsPage() {
                     onClick={() => setSelectedModel(m)}
                     className={`text-sm px-3 py-1.5 rounded-lg border transition-all duration-200 ${
                       selectedModel?.id === m.id
-                        ? 'border-[var(--color-accent)] bg-[rgba(123,147,176,0.1)] text-[var(--color-text-primary)]'
+                        ? 'border-[var(--color-accent)] bg-[rgba(91,158,216,0.1)] text-[var(--color-text-primary)]'
                         : 'border-[var(--color-border)] bg-white text-[var(--color-text-secondary)] hover:border-[var(--color-accent)]'
                     }`}
                   >
@@ -389,7 +389,7 @@ export default function SettingsPage() {
               <div key={p.id} className="flex items-center justify-between p-3.5 border border-[var(--color-border)] rounded-xl hover:border-[var(--color-accent)] transition-colors duration-200">
                 <div className="flex items-center gap-3 min-w-0">
                   <span className="text-sm font-medium text-[var(--color-text-primary)]">{p.label}</span>
-                  <span className="text-[11px] text-[var(--color-text-muted)] bg-[rgba(123,147,176,0.08)] px-2 py-0.5 rounded font-mono">{p.model}</span>
+                  <span className="text-[11px] text-[var(--color-text-muted)] bg-[rgba(91,158,216,0.08)] px-2 py-0.5 rounded font-mono">{p.model}</span>
                   <span className="text-xs text-[var(--color-text-muted)] truncate">{p.apiKey ? '••••已保存' : '(无 Key)'}</span>
                 </div>
                 <div className="flex gap-2 flex-shrink-0">
@@ -422,7 +422,7 @@ export default function SettingsPage() {
 
         <div className="space-y-2">
           {Object.entries(settings.agents).map(([agentName, cfg]: [string, any]) => (
-            <div key={agentName} className={`border rounded-xl p-4 transition-all duration-200 ${cfg.enabled ? 'border-[var(--color-accent)] bg-[rgba(123,147,176,0.04)]' : 'border-[var(--color-border)]'}`}>
+            <div key={agentName} className={`border rounded-xl p-4 transition-all duration-200 ${cfg.enabled ? 'border-[var(--color-accent)] bg-[rgba(91,158,216,0.04)]' : 'border-[var(--color-border)]'}`}>
               <div className="flex items-center justify-between">
                 <div className="flex-1 min-w-0 mr-4">
                   <span className="text-sm font-medium text-[var(--color-text-primary)]">{AGENT_NAMES[agentName]}</span>

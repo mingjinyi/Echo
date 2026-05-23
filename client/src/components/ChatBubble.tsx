@@ -1,4 +1,4 @@
-import type { Message } from '../types';
+﻿import type { Message } from '../types';
 
 interface Props {
   message: Message;
@@ -33,7 +33,7 @@ export default function ChatBubble({ message }: Props) {
   if (displayStyle === 'summary') {
     return (
       <div className="flex justify-start mb-5 animate-fade-in-up">
-        <div className="message-bubble bg-[rgba(123,147,176,0.06)] border border-[var(--color-border)] text-[var(--color-text-secondary)] max-w-[90%] rounded-2xl">
+        <div className="message-bubble bg-[rgba(91,158,216,0.06)] border border-[var(--color-border)] text-[var(--color-text-secondary)] max-w-[90%] rounded-2xl">
           <div className="flex items-center gap-2 mb-2 text-xs text-[var(--color-text-muted)]">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <circle cx="12" cy="12" r="10" />

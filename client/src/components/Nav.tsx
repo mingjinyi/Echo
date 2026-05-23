@@ -17,10 +17,10 @@ export default function Nav() {
     <nav
       className="sticky top-0 z-50"
       style={{
-        background: 'rgba(10, 16, 31, 0.45)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        borderBottom: '1px solid rgba(30, 45, 71, 0.25)',
+        background: 'var(--glass-bg)',
+        backdropFilter: 'blur(var(--glass-blur))',
+        WebkitBackdropFilter: 'blur(var(--glass-blur))',
+        borderBottom: '1px solid var(--glass-border)',
       }}
     >
       <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between">
@@ -29,8 +29,8 @@ export default function Nav() {
           <div
             className="w-8 h-8 rounded-full flex items-center justify-center transition-shadow duration-500"
             style={{
-              background: 'rgba(60, 100, 150, 0.2)',
-              border: '1px solid rgba(130, 170, 210, 0.2)',
+              background: 'var(--color-accent-glow)',
+              border: '1px solid var(--color-accent-glow)',
             }}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(160,200,235,0.7)" strokeWidth="2" strokeLinecap="round">
@@ -57,7 +57,7 @@ export default function Nav() {
                 className="nav-link text-xs"
                 style={active ? {
                   color: 'var(--color-text-primary)',
-                  background: 'rgba(123, 147, 176, 0.12)',
+                  background: 'var(--color-accent-glow)',
                   fontWeight: 400,
                 } : {
                   color: 'var(--color-text-muted)',
@@ -113,7 +113,7 @@ export default function Nav() {
                   className="block px-4 py-2.5 rounded-xl text-sm transition-colors duration-200"
                   style={{
                     color: active ? 'var(--color-text-primary)' : 'var(--color-text-secondary)',
-                    background: active ? 'rgba(123, 147, 176, 0.1)' : 'transparent',
+                    background: active ? 'var(--color-accent-glow)' : 'transparent',
                     fontWeight: active ? 500 : 400,
                   }}
                 >

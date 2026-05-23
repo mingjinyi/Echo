@@ -3,93 +3,93 @@
 @tailwind utilities;
 
 /* ============================================================
-   CSS Custom Properties — Deep Midnight Blue-Black Theme
-   回声 (Echo) — 深海夜色中的回声空间
+   CSS Custom Properties — 回声 (Echo) Design System
+   :root = Shallow Water (light theme)
+   .dark = Deep Ocean Abyss (dark theme, default)
    ============================================================ */
+
+/* ── Light Theme: Shallow Water / Sea Foam ── */
 :root {
-  /* Background layers — deep ocean */
-  --color-abyss: #060b14;
-  --color-surface: #0a101f;
-  --color-surface-elevated: #111a2c;
-  --color-surface-card: #162236;
-
-  /* Borders */
-  --color-border: #1e2d47;
-  --color-border-light: #182538;
-  --color-border-highlight: #2a3d5c;
-
-  /* Text */
-  --color-text-primary: #e2e8f0;
-  --color-text-secondary: #94a3b8;
-  --color-text-muted: #5e6f89;
-
-  /* Accent — muted silver-blue */
-  --color-accent: #7b93b0;
-  --color-accent-hover: #97afcc;
-  --color-accent-dim: #5a6f8a;
-  --color-accent-glow: rgba(123, 147, 176, 0.12);
-
-  /* Warm accent points — very sparing, like distant starlight */
-  --color-warm: #b8a089;
-  --color-warm-glow: rgba(184, 160, 137, 0.08);
-
-  /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 30px rgba(123, 147, 176, 0.08);
-  --shadow-card-hover: 0 8px 40px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(123, 147, 176, 0.12);
-
-  /* Glass */
-  --glass-bg: rgba(17, 26, 44, 0.65);
-  --glass-bg-strong: rgba(17, 26, 44, 0.85);
-  --glass-border: rgba(30, 45, 71, 0.6);
+  --color-abyss: #eef3f7;
+  --color-surface: #f4f7fa;
+  --color-surface-elevated: #ffffff;
+  --color-surface-card: #ffffff;
+  --color-border: #d0dbe5;
+  --color-border-light: #e0e8f0;
+  --color-border-highlight: #b5c5d5;
+  --color-text-primary: #122433;
+  --color-text-secondary: #3d5875;
+  --color-text-muted: #68829b;
+  --color-accent: #3980c8;
+  --color-accent-hover: #2b6db3;
+  --color-accent-dim: #5a90bb;
+  --color-accent-glow: rgba(57, 128, 200, 0.10);
+  --color-warm: #a08060;
+  --color-warm-glow: rgba(160, 128, 96, 0.06);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.10);
+  --shadow-glow: 0 0 20px rgba(57, 128, 200, 0.08);
+  --shadow-card-hover: 0 8px 32px rgba(0, 0, 0, 0.09), 0 0 0 1px rgba(57, 128, 200, 0.12);
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-bg-strong: rgba(255, 255, 255, 0.90);
+  --glass-border: rgba(200, 215, 228, 0.7);
   --glass-blur: 16px;
-
-  /* Chat background */
-  --bg-chat: linear-gradient(180deg, #0a101f 0%, #0d1628 50%, #0a101f 100%);
-
-  /* Echo ring colors */
-  --echo-ring-1: rgba(123, 147, 176, 0.12);
-  --echo-ring-2: rgba(123, 147, 176, 0.06);
-  --echo-ring-3: rgba(123, 147, 176, 0.03);
-
-  /* Particle */
-  --particle-color: rgba(148, 163, 184, 0.15);
+  --bg-chat: linear-gradient(180deg, #f4f7fa 0%, #eef3f7 50%, #f4f7fa 100%);
+  --echo-ring-1: rgba(57, 128, 200, 0.08);
+  --echo-ring-2: rgba(57, 128, 200, 0.04);
+  --echo-ring-3: rgba(57, 128, 200, 0.02);
+  --particle-color: rgba(120, 155, 190, 0.10);
+  /* Gradient tokens for components */
+  --grad-user-msg: linear-gradient(135deg, #3980c8 0%, #5b9ed8 100%);
+  --grad-btn-primary: linear-gradient(135deg, #3980c8 0%, #5b9ed8 100%);
+  --grad-btn-primary-hover: linear-gradient(135deg, #4a90d8 0%, #6aaee5 100%);
+  --btn-shadow: 0 2px 12px rgba(57, 128, 200, 0.25);
+  --btn-shadow-hover: 0 4px 20px rgba(57, 128, 200, 0.35);
+  /* Homepage */
+  --home-bg: #eef3f7;
 }
 
-/* .dark is now the default identity — keep for compatibility */
+/* ── Dark Theme: Deep Ocean Abyss — rich, saturated, bioluminescent ── */
 .dark {
-  --color-abyss: #060b14;
-  --color-surface: #0a101f;
-  --color-surface-elevated: #111a2c;
-  --color-surface-card: #162236;
-  --color-border: #1e2d47;
-  --color-border-light: #182538;
-  --color-border-highlight: #2a3d5c;
-  --color-text-primary: #e2e8f0;
-  --color-text-secondary: #94a3b8;
-  --color-text-muted: #5e6f89;
-  --color-accent: #7b93b0;
-  --color-accent-hover: #97afcc;
-  --color-accent-dim: #5a6f8a;
-  --color-accent-glow: rgba(123, 147, 176, 0.12);
-  --color-warm: #b8a089;
-  --color-warm-glow: rgba(184, 160, 137, 0.08);
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 30px rgba(123, 147, 176, 0.08);
-  --shadow-card-hover: 0 8px 40px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(123, 147, 176, 0.12);
-  --glass-bg: rgba(17, 26, 44, 0.65);
-  --glass-bg-strong: rgba(17, 26, 44, 0.85);
-  --glass-border: rgba(30, 45, 71, 0.6);
+  --color-abyss: #010b18;
+  --color-surface: #051025;
+  --color-surface-elevated: #0b1a35;
+  --color-surface-card: #102245;
+  --color-border: #1a3255;
+  --color-border-light: #142848;
+  --color-border-highlight: #264a75;
+  --color-text-primary: #e0e8f2;
+  --color-text-secondary: #8aa8c8;
+  --color-text-muted: #557595;
+  --color-accent: #5b9ed8;
+  --color-accent-hover: #78b8ee;
+  --color-accent-dim: #3d709f;
+  --color-accent-glow: rgba(91, 158, 216, 0.14);
+  --color-warm: #c0a888;
+  --color-warm-glow: rgba(192, 168, 136, 0.10);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.40);
+  --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.50);
+  --shadow-lg: 0 8px 48px rgba(0, 0, 0, 0.60);
+  --shadow-glow: 0 0 35px rgba(91, 158, 216, 0.10);
+  --shadow-card-hover: 0 8px 48px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(91, 158, 216, 0.15);
+  --glass-bg: rgba(11, 26, 53, 0.70);
+  --glass-bg-strong: rgba(11, 26, 53, 0.88);
+  --glass-border: rgba(26, 50, 85, 0.65);
   --glass-blur: 16px;
-  --bg-chat: linear-gradient(180deg, #0a101f 0%, #0d1628 50%, #0a101f 100%);
-  --echo-ring-1: rgba(123, 147, 176, 0.12);
-  --echo-ring-2: rgba(123, 147, 176, 0.06);
-  --echo-ring-3: rgba(123, 147, 176, 0.03);
-  --particle-color: rgba(148, 163, 184, 0.15);
+  --bg-chat: linear-gradient(180deg, #051025 0%, #081835 50%, #051025 100%);
+  --echo-ring-1: rgba(91, 158, 216, 0.14);
+  --echo-ring-2: rgba(91, 158, 216, 0.07);
+  --echo-ring-3: rgba(91, 158, 216, 0.04);
+  --particle-color: rgba(140, 180, 220, 0.18);
+  /* Gradient tokens */
+  --grad-user-msg: linear-gradient(135deg, #2d6099 0%, #4a85c4 100%);
+  --grad-btn-primary: linear-gradient(135deg, #2d6099 0%, #4a85c4 100%);
+  --grad-btn-primary-hover: linear-gradient(135deg, #3b78b8 0%, #5b9ed8 100%);
+  --btn-shadow: 0 2px 14px rgba(45, 96, 153, 0.35);
+  --btn-shadow-hover: 0 4px 24px rgba(45, 96, 153, 0.50);
+  /* Homepage */
+  --home-bg: #010b18;
 }
 
 /* ============================================================
@@ -167,9 +167,9 @@
 
   .message-user {
     @apply message-bubble ml-auto;
-    background: linear-gradient(135deg, #3b5170 0%, #4f6990 100%);
+    background: var(--grad-user-msg);
     border-radius: 1.25rem 1.25rem 0.25rem 1.25rem;
-    box-shadow: 0 2px 12px rgba(59, 81, 112, 0.25);
+    box-shadow: var(--btn-shadow);
     color: #e2e8f0;
   }
 
@@ -197,13 +197,13 @@
            transition-all duration-300
            disabled:opacity-50 disabled:cursor-not-allowed
            active:scale-[0.97];
-    background: linear-gradient(135deg, #3b5170 0%, #4f6990 100%);
-    box-shadow: 0 2px 12px rgba(59, 81, 112, 0.3);
+    background: var(--grad-btn-primary);
+    box-shadow: var(--btn-shadow);
     color: #e2e8f0;
   }
   .btn-primary:hover:not(:disabled) {
-    background: linear-gradient(135deg, #4a6490 0%, #5e7aa8 100%);
-    box-shadow: 0 4px 20px rgba(59, 81, 112, 0.4);
+    background: var(--grad-btn-primary-hover);
+    box-shadow: var(--btn-shadow-hover);
     transform: translateY(-1px);
   }
 
