@@ -204,26 +204,28 @@ export function analyzeResponse(
 ): ProfilerOutput[] {
   const results: ProfilerOutput[] = [];
   const text = response.toLowerCase();
+  // Short, precise answers shouldn't be penalized
+  const lengthFactor = Math.min(1, 50 / Math.max(1, response.length));
 
   for (const [dimKey, config] of Object.entries(DIMENSION_INDICATORS)) {
     const dim = dimKey as keyof PersonalityDimensions;
     const current = currentDimensions[dim];
     let score = current.value;
-    let evidence = '';
+    const evidencePieces: string[] = [];
     let totalWeight = 0;
 
     // Check high indicators
     for (const kw of config.high.keywords) {
       if (text.includes(kw.toLowerCase())) {
         score += config.high.weight * 10;
-        evidence = `提到/暗示"${kw}"`;
+        evidencePieces.push(`提到"${kw}"`);
         totalWeight += config.high.weight;
       }
     }
     for (const phrase of config.high.phrases) {
       if (phrase.test(response)) {
         score += config.high.weight * 10;
-        evidence = `表达模式匹配: ${phrase.source}`;
+        evidencePieces.push(`表达: ${phrase.source}`);
         totalWeight += config.high.weight;
       }
     }
@@ -232,14 +234,14 @@ export function analyzeResponse(
     for (const kw of config.low.keywords) {
       if (text.includes(kw.toLowerCase())) {
         score -= config.low.weight * 10;
-        evidence = evidence || `提到/暗示"${kw}"`;
+        evidencePieces.push(`提到"${kw}"`);
         totalWeight += config.low.weight;
       }
     }
     for (const phrase of config.low.phrases) {
       if (phrase.test(response)) {
         score -= config.low.weight * 10;
-        evidence = evidence || `表达模式匹配: ${phrase.source}`;
+        evidencePieces.push(`表达: ${phrase.source}`);
         totalWeight += config.low.weight;
       }
     }
@@ -248,7 +250,9 @@ export function analyzeResponse(
     score = Math.max(0, Math.min(10, Math.round(score))) as TraitValue;
 
     if (Math.abs(score - current.value) >= 1 && totalWeight > 0) {
-      const newConfidence = totalWeight >= 0.3 ? 'medium' : 'low';
+      // Lowered threshold: one strong signal is enough (0.15 → ~1 short keyword)
+      const adjustedWeight = totalWeight * lengthFactor;
+      const newConfidence = adjustedWeight >= 0.12 ? 'medium' : 'low';
       const betterConfidence = confidenceOrder(newConfidence) > confidenceOrder(current.confidence)
         ? newConfidence
         : current.confidence;
@@ -258,7 +262,7 @@ export function analyzeResponse(
         previousValue: current.value,
         newValue: score,
         confidence: betterConfidence as Confidence,
-        evidence,
+        evidence: evidencePieces.join('; ') || '关键词匹配',
         direction: score > current.value ? 'increased' : score < current.value ? 'decreased' : 'unchanged',
       });
     }

@@ -106,23 +106,30 @@ export async function processMessage(request: ChatRequest): Promise<ChatResponse
   // Apply profile updates
   for (const update of profileUpdates) {
     const dim = update.dimension as keyof typeof profile.personalityDimensions;
+
+    // Deduplicate evidence — skip if this excerpt already exists for this trait
+    const existingEvidence = profile.personalityDimensions[dim].evidence;
+    const isDuplicate = existingEvidence.some(e => e === update.evidence);
+
     profile.personalityDimensions[dim] = {
       value: update.newValue as any,
       confidence: (update.confidence as Confidence) || 'low',
-      evidence: [...profile.personalityDimensions[dim].evidence, update.evidence],
+      evidence: isDuplicate ? existingEvidence : [...existingEvidence, update.evidence],
       notes: profile.personalityDimensions[dim].notes,
       lastUpdated: new Date().toISOString(),
     };
 
-    // Track evidence
-    addEvidence(userId, {
-      targetTrait: update.dimension,
-      conversationId: conversation.id,
-      messageId: userMsg.id,
-      excerpt: userMessage.slice(0, 150),
-      inference: update.evidence,
-      timestamp: new Date().toISOString(),
-    });
+    // Track evidence — skip if the same excerpt+trait already recorded
+    if (!isDuplicate) {
+      addEvidence(userId, {
+        targetTrait: update.dimension,
+        conversationId: conversation.id,
+        messageId: userMsg.id,
+        excerpt: userMessage.slice(0, 150),
+        inference: update.evidence,
+        timestamp: new Date().toISOString(),
+      });
+    }
   }
 
   // Update pending/completed dimensions
@@ -170,11 +177,15 @@ export async function processMessage(request: ChatRequest): Promise<ChatResponse
       r => r.label === rel.label && r.relationType === rel.relationType
     );
     if (!existing) {
+      // Significance based on: emotional weight (tone) + mention count
+      let sig = 4; // base significance for first mention
+      if (rel.emotionalTone === '复杂/负面') sig += 2;
+      if (rel.emotionalTone === '温暖' || rel.emotionalTone === '感恩') sig += 1;
       profile.relationshipMap.push({
         id: uuidv4(),
         label: rel.label,
         relationType: rel.relationType,
-        significance: 5,
+        significance: Math.min(10, sig),
         emotionalTone: rel.emotionalTone,
         keyEvents: [],
         userAttitude: '',
@@ -183,6 +194,8 @@ export async function processMessage(request: ChatRequest): Promise<ChatResponse
     } else {
       existing.lastMentioned = new Date().toISOString();
       existing.emotionalTone = rel.emotionalTone || existing.emotionalTone;
+      // Increase significance on repeated mentions (capped at 10)
+      existing.significance = Math.min(10, existing.significance + 1);
     }
   }
 

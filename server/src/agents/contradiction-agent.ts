@@ -13,6 +13,10 @@ export function detectContradictions(
 ): Contradiction[] {
   const contradictions: Contradiction[] = [];
 
+  // 0. Intra-message: contradictions within the same message (works for all users)
+  const intraMsg = checkIntraMessage(newMessage);
+  contradictions.push(...intraMsg);
+
   // 1. Say vs Do: Check if user claims something that conflicts with profile data
   const sayVsDo = checkSayVsDo(newMessage, profile);
   contradictions.push(...sayVsDo);
@@ -30,6 +34,86 @@ export function detectContradictions(
   contradictions.push(...pastVsPresent);
 
   return contradictions;
+}
+
+/**
+ * Detect contradictions within a single message.
+ * This works even for brand-new users with no profile history.
+ */
+function checkIntraMessage(text: string): Contradiction[] {
+  const results: Contradiction[] = [];
+
+  // "I'm fine alone" + subtle hints of loneliness in the SAME message
+  const claimsFine = /一个人.*也挺好|不用.*别人.*管|习惯.*一个人|独立.*没.*问题|不需要.*依赖/.test(text);
+  const hintsLonely = /有时候.*还是|虽然.*但是|寂寞|孤单|希望.*有人|偶尔.*也/.test(text);
+  if (claimsFine && hintsLonely) {
+    results.push({
+      id: '',
+      statementA: '强调自己可以独立、一个人也很好',
+      statementB: '但语言中也透露出偶尔的孤独或对连接的渴望',
+      category: 'say_vs_do',
+      resolution: '独立和需要他人并不是对立的——真正的独立是"可以选择"，而不是"必须一个人"。',
+      confidence: 'low',
+    });
+  }
+
+  // "I don't care what others think" + detailed analysis of others' views
+  const claimsDontCare = /不在乎|不在意|无所谓.*别人|不.*管.*别人/.test(text);
+  const analyzesOthers = /他们.*觉得|别人.*可能|会.*不会.*觉得|看起来/.test(text);
+  if (claimsDontCare && analyzesOthers) {
+    results.push({
+      id: '',
+      statementA: '声称不在意别人的看法',
+      statementB: '但同时细致地想象了别人可能的评价',
+      category: 'say_vs_do',
+      resolution: '真正不在意的人通常不会反复分析和想象。这种"不在意"更像是一种保护色。',
+      confidence: 'low',
+    });
+  }
+
+  // "I'm very rational" + emotionally charged language
+  const claimsRational = /理智|冷静|逻辑|理性地|客观/.test(text);
+  const emotionalLanguage = /难过|受伤|崩溃|生气|忍不住|受不了/.test(text);
+  if (claimsRational && emotionalLanguage) {
+    results.push({
+      id: '',
+      statementA: '描述自己是理性/冷静的人',
+      statementB: '同时使用了情绪强度较高的表达',
+      category: 'say_vs_do',
+      resolution: '理智可能是她的自我认知，但情绪并没有因此消失——它们只是换了一种方式被表达。',
+      confidence: 'low',
+    });
+  }
+
+  // "I've changed" + describing the same pattern
+  const claimsChanged = /以前.*现在.*不|已经.*变|不再.*是|现在.*不一样/.test(text);
+  const samePattern = /还是.*会|依然|还是.*一样|一直.*都/.test(text);
+  if (claimsChanged && samePattern) {
+    results.push({
+      id: '',
+      statementA: '描述了自己的变化',
+      statementB: '但语言中也有"还是""依然"等延续性的暗示',
+      category: 'past_vs_present',
+      resolution: '变化和延续常常是同时发生的——有些东西变了，有些东西只是不再被注意到了。',
+      confidence: 'low',
+    });
+  }
+
+  // "I want to be understood" + "but I don't like to explain myself"
+  const wantsUnderstanding = /被理解|有人懂|了解.*我|看.*懂.*我/.test(text);
+  const resistsOpening = /不想.*说|懒得.*解释|说了.*也没用|不.*喜欢.*表达/.test(text);
+  if (wantsUnderstanding && resistsOpening) {
+    results.push({
+      id: '',
+      statementA: '渴望被理解',
+      statementB: '但同时表达了对解释自己的抗拒',
+      category: 'need_vs_avoid',
+      resolution: '渴望被理解却不愿解释——这是"希望别人能看见真实的我，但怕主动展示会失望"的典型信号。',
+      confidence: 'low',
+    });
+  }
+
+  return results;
 }
 
 function checkSayVsDo(text: string, profile: UserProfile): Contradiction[] {

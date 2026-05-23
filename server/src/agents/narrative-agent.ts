@@ -19,6 +19,12 @@ export function generateNarrative(profile: UserProfile): string {
   // --- Core personality ---
   parts.push(generatePersonalitySection(dims, narr));
 
+  // --- Cross-dimension synthesis ---
+  const synthesis = generateCrossDimensionSynthesis(dims);
+  if (synthesis) {
+    parts.push(synthesis);
+  }
+
   // --- Relationships ---
   if (relationships.length > 0) {
     parts.push(generateRelationshipSection(relationships));
@@ -43,7 +49,33 @@ export function generateNarrative(profile: UserProfile): string {
 function generateOpening(dims: UserProfile['personalityDimensions'], narr: NarrativeDimensions): string {
   const socialEnergy = dims.socialEnergy.value;
   const disclosure = dims.selfDisclosureTendency.value;
+  const reflection = dims.reflectionAbility.value;
+  const empathy = dims.empathyTendency.value;
+  const independence = dims.dependencyIndependence.value;
   const coreNarrative = narr.coreNarrative || '一个还在认识自己的人';
+
+  // Find the most extreme trait (furthest from midpoint 5)
+  const extremes = Object.entries(dims)
+    .filter(([_, t]) => t.confidence !== 'low')
+    .map(([k, t]) => ({ key: k, value: t.value, distance: Math.abs(t.value - 5) }))
+    .sort((a, b) => b.distance - a.distance);
+
+  const mostExtreme = extremes[0];
+
+  // High reflection ability — the deepest, most introspective hook
+  if (reflection >= 7 && mostExtreme?.key === 'reflectionAbility') {
+    return `她对自己是好奇的。\n\n不是那种自恋的好奇，而是一种认真的、有时候甚至有点辛苦的"想知道自己为什么会这样"。她会回头看过往的选择，会琢磨那些反复出现的模式。这种反思不是偶尔为之，而是她理解世界和自己在其中的位置的方式。`;
+  }
+
+  // High empathy — the most emotionally attuned hook
+  if (empathy >= 7 && mostExtreme?.key === 'empathyTendency') {
+    return `我注意到她有一个很特别的地方——她对别人的情绪有一种几乎是本能的感知。\n\n不需要对方说出来，她已经察觉到了空气里的变化。这让她在关系里常常是那个被信任、被需要的人。但也让她背负了一些原本不属于她的重量——因为她感受到了，就没法假装没有。`;
+  }
+
+  // High independence — the self-reliant hook
+  if (independence >= 7 && mostExtreme?.key === 'dependencyIndependence') {
+    return `她是一个习惯了"自己来"的人。\n\n不是因为不相信别人，而是独立已经成了一种本能。很多事她一个人就解决了，很多人她不需要开口就会自己离开。这种独立让她很强大，但也让她在某些时刻，错过了一些可以不用一个人撑着的可能。`;
+  }
 
   // Introvert + guarded
   if (socialEnergy <= 4 && disclosure <= 4) {
@@ -155,6 +187,51 @@ function generatePersonalitySection(
   }
 
   return lines.join('\n\n');
+}
+
+/**
+ * Cross-dimension synthesis — connect related traits into deeper insights.
+ * This is what makes the profile feel like "understanding" rather than "listing."
+ */
+function generateCrossDimensionSynthesis(
+  dims: UserProfile['personalityDimensions']
+): string {
+  const highTraits = getHighTraits(dims);
+  const lowTraits = getLowTraits(dims);
+  const insights: string[] = [];
+
+  // High empathy + low social energy: deeply feels but needs solitude
+  if (highTraits.includes('empathyTendency') && lowTraits.includes('socialEnergy')) {
+    insights.push('最让我感触的是——她有很强的共情能力，能敏锐地感受到别人的情绪，但她的社交能量却是内向的。这意味着她常常在感受到很多之后，需要一个人安静地消化那些不属于自己的情绪。这是一种比别人更累的温柔。');
+  }
+
+  // High empathy + high control need: feels others' pain but wants to fix it
+  if (highTraits.includes('empathyTendency') && highTraits.includes('controlNeed')) {
+    insights.push('她的共情和控制欲之间存在一种张力：她感受到别人的痛苦，然后忍不住想要去解决它——但有些事不是她能控制的。这种"感受到却不一定能帮上"的冲突，可能是她内心疲惫的一个重要来源。');
+  }
+
+  // High independence + low disclosure: alone but not necessarily by choice
+  if (highTraits.includes('dependencyIndependence') && lowTraits.includes('selfDisclosureTendency')) {
+    insights.push('她习惯了一个人处理事情，也不轻易对人敞开心扉——这两者叠加在一起，让她看起来很"不需要别人"。但独立和封闭之间的那条线，有时候并不像看起来那么清晰。');
+  }
+
+  // High reflection + low emotional stability: thinks deeply about pain
+  if (highTraits.includes('reflectionAbility') && lowTraits.includes('emotionalStability')) {
+    insights.push('她有一个值得关注的特点：她的情绪不太平稳，但她的反思能力又很强。这意味着她在难过的时候不只是难过——她还会反复去想"我为什么难过"，这让她的情感体验比别人更深，但有时候也更难走出来。');
+  }
+
+  // Low risk + high action preference: acts fast but plays safe — interesting tension
+  if (lowTraits.includes('riskAversion') && highTraits.includes('actionPreference')) {
+    insights.push('她行动力很强，但同时也很在意安全——这是一个有意思的组合。她不是那种不顾后果的人，她的快是"想好了底线的快"，不是鲁莽，而是在安全范围内的果断。');
+  }
+
+  // High relationship sensitivity + high independence: needs people but resists relying
+  if (highTraits.includes('relationshipSensitivity') && highTraits.includes('dependencyIndependence')) {
+    insights.push('在关系里，她处于一种微妙的矛盾中：她对他人的情绪和反应非常敏感，但她又不习惯依赖任何人。她会在乎、会观察、会在意——但不太会开口说"我需要你"。这种自给自足的敏感，是她的性格中最容易被误解的地方。');
+  }
+
+  if (insights.length === 0) return '';
+  return insights.slice(0, 2).join('\n\n');
 }
 
 function generateRelationshipSection(relationships: UserProfile['relationshipMap']): string {
