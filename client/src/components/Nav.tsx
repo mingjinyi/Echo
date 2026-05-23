@@ -27,17 +27,21 @@ export default function Nav() {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2.5 group">
           <div className="w-9 h-9 flex items-center justify-center">
-            <svg width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* Primary — the "voice", solid diamond */}
-              <g transform="translate(18, 19) rotate(45)">
-                <rect x="-9.5" y="-9.5" width="19" height="19" rx="4"
-                  fill="var(--color-accent-hover)" />
-              </g>
-              {/* Echo — offset, outlined, slightly smaller */}
-              <g transform="translate(22, 22) rotate(45)">
-                <rect x="-8" y="-8" width="16" height="16" rx="3.5"
-                  fill="none" stroke="var(--color-accent)" strokeWidth="1.6" opacity="0.7" />
-              </g>
+            <svg width="26" height="26" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              {/* Diagonal ring plane A — +32° */}
+              <ellipse cx="20" cy="20" rx="17" ry="7.5"
+                fill="none" stroke="var(--color-accent)" strokeWidth="1.1" opacity="0.55"
+                transform="rotate(32 20 20)" />
+              {/* Diagonal ring plane B — -32° */}
+              <ellipse cx="20" cy="20" rx="17" ry="7.5"
+                fill="none" stroke="var(--color-accent)" strokeWidth="1.1" opacity="0.55"
+                transform="rotate(-32 20 20)" />
+              {/* Eye outline — simplified almond shape */}
+              <path d="M 7 20 Q 13 11 20 10 Q 27 11 33 20 Q 27 29 20 30 Q 13 29 7 20 Z"
+                fill="none" stroke="var(--color-accent-hover)" strokeWidth="1.6" strokeLinecap="round" />
+              {/* Pupil */}
+              <circle cx="20" cy="20" r="3.2"
+                fill="var(--color-accent-hover)" />
             </svg>
           </div>
           <span className="text-lg font-semibold tracking-tight" style={{ color: 'var(--color-text-primary)' }}>
