@@ -115,6 +115,7 @@ function ringColor(color: Ringlet['color'], opacity: number): string {
 
 export default function AstroRings({ size = 620, className = '' }: AstroRingsProps) {
   const reduced = useReducedMotion();
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   // Split ringlets into two interleaved planes by index parity —
   // each plane gets rings at all radii for a complete structure.
@@ -133,9 +134,11 @@ export default function AstroRings({ size = 620, className = '' }: AstroRingsPro
 
   // Shared ring rendering helper
   function renderRingGroup(bright: Ringlet[], normal: Ringlet[], faint: Ringlet[], prefix: string) {
+    // Mobile: skip SVG blur filters for GPU performance
+    const glowFilter = isMobile ? undefined : 'url(#ar-glow)';
     return (
       <>
-        <g filter="url(#ar-glow)">
+        <g filter={glowFilter}>
           {bright.map((r, i) => (
             <ellipse
               key={`${prefix}b-${i}`}
@@ -242,7 +245,7 @@ export default function AstroRings({ size = 620, className = '' }: AstroRingsPro
         {/* ── Outermost diffuse halo — unrotated ── */}
         <circle cx="300" cy="300" r="290"
           fill="none" stroke="rgba(45,135,205,0.06)" strokeWidth="16"
-          filter="url(#ar-glow-wide)"
+          filter={isMobile ? undefined : 'url(#ar-glow-wide)'}
           style={{ animation: reduced ? 'none' : 'ringPulse 10s ease-in-out infinite' }}
         />
 

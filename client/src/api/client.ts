@@ -4,18 +4,33 @@ const API_BASE = isCapacitor
   ? 'https://echo-p0on.onrender.com/api'
   : '/api';
 
+const REQUEST_TIMEOUT = 25000; // 25s timeout (Render cold start takes up to ~20s)
+
 async function request<T>(url: string, options?: RequestInit): Promise<T> {
-  const res = await fetch(`${API_BASE}${url}`, {
-    headers: { 'Content-Type': 'application/json' },
-    ...options,
-  });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
 
-  if (!res.ok) {
-    const error = await res.json().catch(() => ({ error: res.statusText }));
-    throw new Error(error.error || `Request failed: ${res.status}`);
+  try {
+    const res = await fetch(`${API_BASE}${url}`, {
+      headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal,
+      ...options,
+    });
+
+    if (!res.ok) {
+      const error = await res.json().catch(() => ({ error: res.statusText }));
+      throw new Error(error.error || `Request failed: ${res.status}`);
+    }
+
+    return res.json();
+  } catch (err: any) {
+    if (err.name === 'AbortError') {
+      throw new Error('请求超时——服务器正在唤醒中，请稍后重试');
+    }
+    throw err;
+  } finally {
+    clearTimeout(timeoutId);
   }
-
-  return res.json();
 }
 
 // Chat API
