@@ -336,6 +336,18 @@
 }
 
 /* ============================================================
+   Performance hints — GPU acceleration for animated elements
+   ============================================================ */
+.home-visual {
+  will-change: transform, opacity;
+  contain: layout style paint;
+}
+
+.home-visual svg {
+  will-change: transform;
+}
+
+/* ============================================================
    Utilities
    ============================================================ */
 @layer utilities {

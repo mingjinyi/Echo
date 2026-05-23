@@ -415,10 +415,43 @@ export default function SettingsPage() {
           <span className="w-7 h-7 rounded-full bg-[var(--color-accent)] text-white text-xs flex items-center justify-center font-medium">2</span>
           <span className="section-title mb-0">Agent 分配</span>
         </div>
-        <p className="text-xs text-[var(--color-text-muted)] mb-5">
+        <p className="text-xs text-[var(--color-text-muted)] mb-4">
           选择哪些 Agent 使用 LLM。关闭的 Agent 使用内置规则引擎，不消耗 API。
           {activeProviders.length === 0 && <span className="text-amber-600 block mt-1">先在上方添加供应商并填入 Key 后才能分配。</span>}
         </p>
+
+        {/* Quick-apply: one-click set all agents to use the same provider */}
+        {activeProviders.length > 0 && (
+          <div className="flex items-center gap-3 mb-4 p-3 border border-[var(--color-border)] rounded-xl bg-[rgba(91,158,216,0.04)]">
+            <span className="text-xs text-[var(--color-text-muted)] whitespace-nowrap">一键设置全部:</span>
+            <select
+              id="bulkProvider"
+              defaultValue=""
+              className="text-xs border border-[var(--color-border)] rounded-lg px-2.5 py-1.5 bg-[var(--color-surface-elevated)] text-[var(--color-text-primary)] flex-1 focus:outline-none focus:border-[var(--color-accent)]"
+            >
+              <option value="" disabled>选择模型...</option>
+              {activeProviders.map((ap: any) => (
+                <option key={ap.id} value={ap.id}>{ap.label} ({ap.model})</option>
+              ))}
+            </select>
+            <button
+              onClick={() => {
+                const sel = (document.getElementById('bulkProvider') as HTMLSelectElement)?.value;
+                if (!sel) return;
+                const agents = { ...settings.agents };
+                for (const name of Object.keys(agents)) {
+                  agents[name] = { ...agents[name], enabled: true, providerId: sel };
+                }
+                setSettings({ ...settings, agents });
+                setMessage('全部 Agent 已统一设置');
+                setTimeout(() => setMessage(''), 2000);
+              }}
+              className="text-xs btn-primary px-4 py-1.5 whitespace-nowrap"
+            >
+              应用全部
+            </button>
+          </div>
+        )}
 
         <div className="space-y-2">
           {Object.entries(settings.agents).map(([agentName, cfg]: [string, any]) => (

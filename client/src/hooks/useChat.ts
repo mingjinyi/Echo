@@ -3,6 +3,7 @@ import { chatApi } from '../api/client';
 import type { Message, ConversationPhase } from '../types';
 
 const USER_ID_KEY = 'echo_user_id';
+const CONV_ID_KEY = 'echo_conv_id';
 
 function getUserId(): string {
   let id = localStorage.getItem(USER_ID_KEY);
@@ -16,10 +17,13 @@ function getUserId(): string {
 export function useChat() {
   const [userId] = useState(getUserId);
   const [messages, setMessages] = useState<Message[]>([]);
-  const [conversationId, setConversationId] = useState<string | undefined>();
+  const [conversationId, setConversationId] = useState<string | undefined>(
+    () => localStorage.getItem(CONV_ID_KEY) || undefined
+  );
   const [phase, setPhase] = useState<ConversationPhase>('greeting');
   const [loading, setLoading] = useState(false);
   const [profileUpdated, setProfileUpdated] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom
@@ -27,49 +31,31 @@ export function useChat() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Load history on mount
+  // Load history on mount — never auto-start a new conversation
   useEffect(() => {
     loadHistory();
   }, []);
 
   const loadHistory = async () => {
     try {
+      setError(null);
       const data = await chatApi.getHistory(userId);
       if (data.messages && data.messages.length > 0) {
         setMessages(data.messages);
-        // Determine phase from last message
         const lastMsg = data.messages[data.messages.length - 1];
         if (lastMsg.metadata?.displayStyle === 'profile') {
           setPhase('final_profile');
+        } else if (lastMsg.role === 'assistant') {
+          setPhase('dynamic_followup');
         }
-      } else {
-        // Start a new conversation: send empty message to trigger greeting
-        await sendInitialMessage();
       }
-    } catch (error) {
-      console.error('Failed to load history:', error);
-      // Start fresh
-      await sendInitialMessage();
-    }
-  };
-
-  const sendInitialMessage = async () => {
-    try {
-      setLoading(true);
-      const response = await chatApi.sendMessage(userId, '你好');
-      if (response.message) {
-        setMessages([response.message]);
-        setPhase(response.phase as ConversationPhase);
-        setConversationId(response.conversationId);
-      }
-    } catch (error) {
-      console.error('Failed to start conversation:', error);
-    } finally {
-      setLoading(false);
+    } catch (err: any) {
+      setError(err.message || '加载失败');
     }
   };
 
   const sendMessage = useCallback(async (content: string) => {
+    setError(null);
     // Add user message immediately
     const userMsg: Message = {
       id: `temp_${Date.now()}`,
@@ -85,20 +71,14 @@ export function useChat() {
       if (response.message) {
         setMessages(prev => [...prev, response.message]);
         setPhase(response.phase as ConversationPhase);
-        if (!conversationId) setConversationId(response.conversationId);
+        if (!conversationId && response.conversationId) {
+          setConversationId(response.conversationId);
+          localStorage.setItem(CONV_ID_KEY, response.conversationId);
+        }
         setProfileUpdated(response.profileUpdated);
       }
-    } catch (error) {
-      console.error('Failed to send message:', error);
-      // Add error message
-      const errorMsg: Message = {
-        id: `error_${Date.now()}`,
-        role: 'assistant',
-        content: '抱歉，出了点问题。请稍后再试。',
-        timestamp: new Date().toISOString(),
-        metadata: { displayStyle: 'system' },
-      };
-      setMessages(prev => [...prev, errorMsg]);
+    } catch (err: any) {
+      setError(err.message || '请求失败，请稍后重试');
     } finally {
       setLoading(false);
     }
@@ -109,12 +89,12 @@ export function useChat() {
       await chatApi.resetChat(userId);
       setMessages([]);
       setConversationId(undefined);
+      localStorage.removeItem(CONV_ID_KEY);
       setPhase('greeting');
       setProfileUpdated(false);
-      // Restart
-      await sendInitialMessage();
-    } catch (error) {
-      console.error('Failed to reset:', error);
+      setError(null);
+    } catch (err: any) {
+      setError('重置失败');
     }
   }, [userId]);
 
@@ -124,8 +104,10 @@ export function useChat() {
     phase,
     loading,
     profileUpdated,
+    error,
     messagesEndRef,
     sendMessage,
     resetChat,
+    loadHistory,
   };
 }

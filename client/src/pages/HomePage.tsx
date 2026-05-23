@@ -85,7 +85,7 @@ export default function HomePage() {
           ================================================================ */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 sm:px-6">
         {/* ---- Center visual: AstroRings + Eye ---- */}
-        <div className="relative flex items-center justify-center mb-6 sm:mb-8" style={{ marginTop: '-5vh' }}>
+        <div className="relative flex items-center justify-center mb-6 sm:mb-8 home-visual" style={{ marginTop: '-5vh' }}>
           <div className="absolute inset-0 flex items-center justify-center">
             <AstroRings size={visualSize.rings} />
           </div>

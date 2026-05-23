@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { useChat } from '../hooks/useChat';
 import { chatApi } from '../api/client';
 import ChatBubble from '../components/ChatBubble';
@@ -23,15 +23,16 @@ export default function ChatPage() {
     phase,
     loading,
     profileUpdated,
+    error,
     messagesEndRef,
     sendMessage,
     resetChat,
+    loadHistory,
   } = useChat();
 
   const [showProfilePreview, setShowProfilePreview] = useState(false);
   const [generatedNarrative, setGeneratedNarrative] = useState<string | null>(null);
   const [generatingProfile, setGeneratingProfile] = useState(false);
-
   const handleGenerateProfile = async () => {
     setGeneratingProfile(true);
     try {
@@ -46,6 +47,7 @@ export default function ChatPage() {
   };
 
   const hasMessages = messages.length > 0;
+  const isNewUser = !hasMessages && !loading && !error;
 
   return (
     <div className="max-w-2xl mx-auto px-4 pt-3 pb-4">
@@ -53,7 +55,7 @@ export default function ChatPage() {
       <div className="flex items-center justify-between mb-4 px-1">
         <div className="flex items-center gap-3">
           <span className="text-sm font-medium text-[var(--color-text-primary)]">
-            {PHASE_LABELS[phase] || phase}
+            {hasMessages ? (PHASE_LABELS[phase] || phase) : '回声'}
           </span>
           {profileUpdated && (
             <span className="badge badge-primary">画像已更新</span>
@@ -67,12 +69,14 @@ export default function ChatPage() {
           >
             {generatingProfile ? '生成中...' : '生成画像'}
           </button>
-          <button
-            onClick={resetChat}
-            className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] px-2 py-1.5 transition-colors duration-200"
-          >
-            重新开始
-          </button>
+          {hasMessages && (
+            <button
+              onClick={resetChat}
+              className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] px-2 py-1.5 transition-colors duration-200"
+            >
+              重新开始
+            </button>
+          )}
         </div>
       </div>
 
@@ -102,22 +106,41 @@ export default function ChatPage() {
         className="rounded-2xl min-h-[60vh] max-h-[65vh] overflow-y-auto mb-4 p-5 transition-colors duration-300"
         style={{ background: 'var(--bg-chat)' }}
       >
-        {/* Empty state */}
-        {!hasMessages && !loading && (
+        {/* Error state */}
+        {error && !hasMessages && (
+          <div className="flex flex-col items-center justify-center h-64 gap-4">
+            <p className="text-sm text-[var(--color-text-secondary)]">{error}</p>
+            <button
+              onClick={loadHistory}
+              className="btn-primary text-sm px-6 py-2"
+            >
+              重新加载
+            </button>
+          </div>
+        )}
+
+        {/* Empty state — new user, no history */}
+        {isNewUser && (
           <div className="flex flex-col items-center justify-center h-64 gap-4">
             <div className="w-16 h-16 rounded-full bg-[rgba(91,158,216,0.08)] flex items-center justify-center">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" strokeWidth="1.5" strokeLinecap="round">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
               </svg>
             </div>
-            <p className="text-[var(--color-text-muted)] text-sm">开始我们的对话吧...</p>
+            <p className="text-[var(--color-text-muted)] text-sm mb-1">在这里，被理解是一件慢慢发生的事</p>
+            <button
+              onClick={() => sendMessage('你好')}
+              disabled={loading}
+              className="btn-primary text-sm px-6 py-2"
+            >
+              {loading ? '连接中...' : '开始对话'}
+            </button>
           </div>
         )}
 
         {/* Messages */}
         {hasMessages && (
           <>
-            {/* Phase divider at top */}
             <div className="divider-text mb-5">
               · {PHASE_LABELS[phase] || phase} ·
             </div>
@@ -148,9 +171,7 @@ export default function ChatPage() {
         onSend={sendMessage}
         disabled={loading}
         placeholder={
-          phase === 'greeting'
-            ? '开始我们的对话...'
-            : '按你的节奏来就好...'
+          loading ? '请稍候...' : '按你的节奏来就好...'
         }
       />
     </div>
