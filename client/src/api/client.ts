@@ -1,9 +1,7 @@
-// In Capacitor (Android/iOS), use the host machine's address.
-// 10.0.2.2 is the Android emulator alias for host localhost.
-// For a real device, set VITE_API_URL to your computer's LAN IP.
+// In Capacitor (Android/iOS), use the Render cloud server.
 const isCapacitor = !!(window as any).Capacitor;
 const API_BASE = isCapacitor
-  ? (import.meta.env.VITE_API_URL as string || 'http://10.0.2.2:4000') + '/api'
+  ? 'https://echo-p0on.onrender.com/api'
   : '/api';
 
 async function request<T>(url: string, options?: RequestInit): Promise<T> {
